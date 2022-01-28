@@ -1,4 +1,4 @@
-model_name = 'il_godo';
+model_name = 'Gain';
 % Solver
 set_param(model_name, 'SolverType', 'Fixed-step');
 % Code Generation
