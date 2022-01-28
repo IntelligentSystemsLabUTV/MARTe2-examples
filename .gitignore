@@ -36,6 +36,8 @@
 #+--------------+
 #|    MATLAB    |
 #+--------------+
+*.mat
+*_ert_shrlib_rtw
 # Windows default autosave extension
 *.asv
 # OSX / *nix default autosave extension
