@@ -132,6 +132,8 @@ RUN apt-get update && apt-get install -y \
     zsh \
     zsh-doc \
     chroma && \
+    apt-get autoclean && \
+    apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #+------------+

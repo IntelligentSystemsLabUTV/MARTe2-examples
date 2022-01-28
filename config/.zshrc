@@ -20,7 +20,6 @@ if [[ "$TERM" == "linux" ]]; then
     export EDITOR='nano'
   fi
   source ~/.aliases.zsh
-  source ~/.ros2_cmds.zsh
   PROMPT='%B%F{red}%n@%M%f %F{yellow}%~%f %F{white}(%?%) $%f%b '
   return
 fi
@@ -122,7 +121,6 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 unalias rm
 source $HOME/.aliases.zsh
-source $HOME/.ros2_cmds.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
