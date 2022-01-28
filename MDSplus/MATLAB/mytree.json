@@ -1,0 +1,36 @@
+{
+    "name": "mytree",
+    "shot": -1,
+    "subnodes": [
+        {
+            "name": "node1",
+            "usage": "structure",
+            "subnodes": [
+                {
+                    "name": "num1",
+                    "usage": "numeric",
+                    "value": "10",
+                    "subnodes": []
+                },
+                {
+                    "name": "vec1",
+                    "usage": "numeric",
+                    "value": "[1, 1, 2, 3, 5, 8]",
+                    "subnodes": []
+                },
+                {
+                    "name": "sig1",
+                    "usage": "signal",
+                    "x": "0:0.01:10",
+                    "y": "sin(x)",
+                    "subnodes": []
+                }
+            ]
+        },
+        {   
+            "name": "num3",
+            "usage": "numeric",
+            "subnodes": []
+        }
+    ]
+}
