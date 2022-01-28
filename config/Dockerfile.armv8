@@ -241,9 +241,10 @@ RUN wget https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-demos-padova/raw/develop
 # Clone MARTe2 Core repository and change branch
 ENV TARGET=armv8-linux
 ENV MARTe2_DIR=$HOME/MARTe2
-RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2 $MARTe2_DIR && \
-    cd $MARTe2_DIR && \
-    git checkout develop-armv8-linux
+RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2 $MARTe2_DIR
+COPY Makefile.armv8-linux $MARTe2_DIR
+COPY MakeStdLibDefs.armv8-linux $MARTe2_DIR/MakeDefaults
+COPY MakeStdLibRules.armv8-linux $MARTe2_DIR/MakeDefaults
 # Change MakeDefaults
 RUN sed -i "s/-Werror -Wno-invalid-offsetof/-Wno-error -Wno-invalid-offsetof -fpermissive/g" $MARTe2_DIR/MakeDefaults/MakeStdLibDefs.armv8-linux
 RUN sed -i "s/-lrt/-lrt -lncurses/g" $MARTe2_DIR/MakeDefaults/MakeStdLibDefs.armv8-linux
