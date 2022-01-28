@@ -8,10 +8,7 @@
 #-d cgdb=Run with cgdb
 #-d strace=Run with strace
 
-export MARTe2_F4E=/home/pi/MARTe2-F4E
-export MARTe2_DIR=$MARTe2_F4E/MARTe2_armv8
-export MARTe2_Componenets_DIR=$MARTe2_F4E/MARTe2-components
-export MARTe2_EXAMPLES_DIR=/home/pi/MARTe2-examples
+source MARTe2_setup.sh
 
 #Run with cgdb or strace?
 DEBUG=""
@@ -52,9 +49,6 @@ esac
 shift # past argument or value
 done
 
-if [ -z ${MARTe2_DIR+x} ]; then echo "Please set the MARTe2_DIR environment variable"; exit; fi
-if [ -z ${MARTe2_Components_DIR+x} ]; then echo "Please set the MARTe2_Components_DIR environment variable"; exit; fi
-
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
 # MARTe2 Core
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_DIR/Build/$TARGET/Core/
@@ -87,13 +81,15 @@ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/Interfaces/EPICS/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/Interfaces/OPCUA/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/Interfaces/EPICSPVA/
-# MDSplus
-LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MDSPLUS_DIR/lib/
 # MARTe2 Examples
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_EXAMPLES_DIR/Build/$TARGET/Components/DataSources/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_EXAMPLES_DIR/Build/$TARGET/Components/GAMs/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_EXAMPLES_DIR/Build/$TARGET/Components/Interfaces/TCPSocketMessageProxy/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_EXAMPLES_DIR/Models/
+# MDSplus
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MDSPLUS_DIR/lib/
+# SDN
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SDN_CORE_DIR/target/lib/
 
 echo $LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH
