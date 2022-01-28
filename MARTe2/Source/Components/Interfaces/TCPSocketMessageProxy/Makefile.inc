@@ -39,18 +39,22 @@ INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L0Types
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L1Portability
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L2Objects
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L3Streams
-INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L4Messages
-INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L4Logger
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L4Configuration
+INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L4HttpService
+INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L4Messages
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/BareMetal/L5GAMs
+INCLUDES += -I$(MARTe2_DIR)/Source/Core/FileSystem/L1Portability
+INCLUDES += -I$(MARTe2_DIR)/Source/Core/FileSystem/L3Streams
+INCLUDES += -I$(MARTe2_DIR)/Source/Core/FileSystem/L4HttpService
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L1Portability
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L3Services
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L4Messages
-INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L4LoggerService
+INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L4StateMachine
+
 
 all: $(OBJS) $(SUBPROJ) \
-	$(BUILD_DIR)/TCPSockerMessageProxy$(LIBEXT) \
-	$(BUILD_DIR)/TCPSockerMessageProxy$(DLLEXT)
+	$(BUILD_DIR)/TCPSocketMessageProxy$(LIBEXT) \
+	$(BUILD_DIR)/TCPSocketMessageProxy$(DLLEXT)
 	    echo  $(OBJS)
 
 include $(MAKEDEFAULTDIR)/MakeStdLibRules.$(TARGET)
