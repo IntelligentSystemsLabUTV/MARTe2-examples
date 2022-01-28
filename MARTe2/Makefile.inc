@@ -30,7 +30,7 @@ ROOT_DIR = .
 
 include $(MAKEDEFAULTDIR)/MakeStdLibDefs.$(TARGET)
 
-all: $(OBJS) $(SUBPROJMAIN) check-env
+all: $(OBJS) $(SUBPROJ) check-env
 	echo  $(OBJS)
 
 include $(MAKEDEFAULTDIR)/MakeStdLibRules.$(TARGET)

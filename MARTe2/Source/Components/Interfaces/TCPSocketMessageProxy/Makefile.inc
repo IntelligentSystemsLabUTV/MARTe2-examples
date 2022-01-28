@@ -52,9 +52,11 @@ INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L4Messages
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L4StateMachine
 
 
-all: $(OBJS) $(SUBPROJ) \
+all: $(OBJS) \
 	$(BUILD_DIR)/TCPSocketMessageProxy$(LIBEXT) \
 	$(BUILD_DIR)/TCPSocketMessageProxy$(DLLEXT)
 	    echo  $(OBJS)
+
+include depends.$(TARGET)
 
 include $(MAKEDEFAULTDIR)/MakeStdLibRules.$(TARGET)

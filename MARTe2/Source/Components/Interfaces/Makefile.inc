@@ -32,6 +32,8 @@ MAKEDEFAULTDIR=$(MARTe2_DIR)/MakeDefaults
 
 include $(MAKEDEFAULTDIR)/MakeStdLibDefs.$(TARGET)
 
+LIBRARIES_STATIC+=$(BUILD_DIR)/TCPSocketMessageProxy/TCPSocketMessageProxy$(LIBEXT)
+
 all: $(OBJS)  $(SUBPROJ) \
 	$(BUILD_DIR)/Interfaces$(LIBEXT) \
 	$(BUILD_DIR)/Interfaces$(DLLEXT)
