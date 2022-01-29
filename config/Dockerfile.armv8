@@ -127,6 +127,9 @@ RUN apt-get update && apt-get install -y \
 RUN echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-armhf" >> /etc/environment && \
     . /etc/environment
 
+#+-----------+
+#|    Zsh    |
+#+-----------+
 # Install Zsh
 RUN apt-get update && apt-get install -y \
     zsh \
@@ -152,7 +155,9 @@ USER $USERNAME
 ENV HOME=/home/$USERNAME
 WORKDIR $HOME
 
-# Configure Zsh for internal user
+#+-----------------+
+#|    Oh-My-Zsh    |
+#+-----------------+
 ENV ZSH=$HOME/.oh-my-zsh
 ARG ZSH_CUSTOM=$ZSH/custom
 RUN wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh || true
@@ -162,9 +167,9 @@ RUN \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
-COPY --chown=$USER_UID:$USER_GID .zshrc ./
-COPY --chown=$USER_UID:$USER_GID .aliases.zsh ./
-COPY --chown=$USER_UID:$USER_GID .p10k.zsh ./
+COPY --chown=$USER_UID:$USER_GID .zshrc $HOME
+COPY --chown=$USER_UID:$USER_GID .aliases.zsh $HOME
+COPY --chown=$USER_UID:$USER_GID .p10k.zsh $HOME
 
 #+------------------+
 #|    Miniconda3    |
@@ -260,6 +265,9 @@ RUN cd $MARTe2_DIR && \
 # Clone MARTe2 Examples repository
 ENV MARTe2_Examples_DIR=$HOME/MARTe2-examples
 RUN git clone https://github.com/IntelligentSystemsLabUTV/MARTe2-examples $MARTe2_Examples_DIR
+# Build MARTe2 Examples
+RUN cd $MARTe2_Examples_DIR && \
+    make -f Makefile.armv8-linux
 # Untar MATLAB includes
 ENV MATLAB_DIR=$HOME/MATLAB
 RUN mkdir $MATLAB_DIR && \
@@ -280,4 +288,6 @@ RUN mkdir $MATLAB_DIR && \
 
 # Activate interaction with apt
 ENV DEBIAN_FRONTEND=dialog
-WORKDIR $HOME
+
+# Set default shell to start
+CMD ["zsh"]
