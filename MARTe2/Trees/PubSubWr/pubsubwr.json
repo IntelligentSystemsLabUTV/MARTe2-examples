@@ -1,0 +1,16 @@
+{
+    "name": "pubsubwr",
+    "shot": -1,
+    "subnodes": [
+        {
+            "name": "counter",
+            "usage": "signal",
+            "subnodes": []
+        },
+        {
+            "name": "time",
+            "usage": "signal",
+            "subnodes": []
+        }
+    ]
+}
