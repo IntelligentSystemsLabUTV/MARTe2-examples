@@ -39,9 +39,6 @@ check-env:
 ifndef MARTe2_DIR
     $(error MARTe2_DIR is undefined)
 endif
-ifndef MARTe2_Components_DIR
-    $(error MARTe2_Componenets_DIR is undefined)
-endif
 ifndef TARGET
     $(error TARGET is undefined)
 endif
