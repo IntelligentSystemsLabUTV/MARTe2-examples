@@ -11,11 +11,6 @@
             "name": "time",
             "usage": "signal",
             "subnodes": []
-        },
-        {
-            "name": "cycletime",
-            "usage": "signal",
-            "subnodes": []
         }
     ]
 }

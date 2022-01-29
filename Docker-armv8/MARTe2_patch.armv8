@@ -1,7 +1,0 @@
-#!/bin/sh
-
-cd $MARTe2_DIR/Source/Core/Scheduler/L5GAMs
-patch MemoryMapAsyncOutputBroker.h < path_mem_h.diff
-patch MemoryMapAsyncOutputBroker.cpp < patch_mem_cpp.diff
-patch MemoryMapAsyncTriggerOutputBroker.h < patch_mem_trig_h.diff
-patch MemoryMapAsyncTriggerOutputBroker.cpp < patch_mem_trig_cpp.diff
