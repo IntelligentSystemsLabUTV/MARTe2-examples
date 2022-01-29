@@ -5,3 +5,4 @@ export MARTe2_DIR=$HOME/MARTe2-armv8
 export MARTe2_Components_DIR=$HOME/MARTe2-components
 export MARTe2_Examples_DIR=$HOME/MARTe2-examples
 export WRRD_path=$MARTe2_Examples_DIR/MARTe2/Trees/WrRd
+export PUBSUBWR_path=$MARTe2_Examples_DIR/MARTe2/Trees/PubSubWr
