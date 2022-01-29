@@ -31,6 +31,8 @@ sudo apt-get install -y \
 echo "Downloading the installation script..."
 curl -fsSL https://get.docker.com -o get-docker.sh
 
+# REBOOT ??
+
 # Install Docker
 echo "Installing Docker..."
 sudo sh get-docker.sh
