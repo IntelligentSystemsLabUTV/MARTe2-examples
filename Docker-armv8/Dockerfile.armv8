@@ -243,17 +243,10 @@ RUN wget https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-demos-padova/raw/develop
 #+--------------+
 #|    MARTe2    |
 #+--------------+
-# Clone MARTe2 Core repository and change branch
+# Clone MARTe2 Core repository
 ENV TARGET=armv8-linux
-ENV MARTe2_DIR=$HOME/MARTe2
-RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2 $MARTe2_DIR && \
-    cd $MARTe2_DIR && \
-    git checkout develop-armv8-linux
-# Change MakeDefaults
-RUN sed -i "s/-Werror -Wno-invalid-offsetof/-Wno-error -Wno-invalid-offsetof -fpermissive/g" $MARTe2_DIR/MakeDefaults/MakeStdLibDefs.armv8-linux
-RUN sed -i "s/-lrt/-lrt -lncurses/g" $MARTe2_DIR/MakeDefaults/MakeStdLibDefs.armv8-linux
-# Remove tests
-RUN sed -i "s/gtest core test/core/g" $MARTe2_DIR/Makefile.inc
+ENV MARTe2_DIR=$HOME/MARTe2-armv8
+RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2 $MARTe2_DIR
 # Build MARTe2 Core
 RUN cd $MARTe2_DIR && \
     make -f Makefile.armv8-linux
@@ -265,25 +258,24 @@ RUN cd $MARTe2_DIR && \
 ENV MARTe2_Examples_DIR=$HOME/MARTe2-examples
 RUN git clone https://github.com/IntelligentSystemsLabUTV/MARTe2-examples $MARTe2_Examples_DIR
 # Build MARTe2 Examples
-RUN cd $MARTe2_Examples_DIR && \
+RUN cd $MARTe2_Examples_DIR/MARTe2 && \
     make -f Makefile.armv8-linux
 # Untar MATLAB includes
 ENV MATLAB_DIR=$HOME/MATLAB
 RUN mkdir $MATLAB_DIR && \
     tar -xzf $MARTe2_Examples_DIR/MATLAB/Include.tar.gz -C $MATLAB_DIR
-
-##+-------------------------+
-##|    MARTe2 Components    |
-##+-------------------------+
-## Clone MARTe2 Components repository
-#ENV MARTe2_Components_DIR=$HOME/MARTe2-components
-#RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-components $MARTe2_Components_DIR
-## Remove tests
-#RUN sed -i "s/core test/core/g" $MARTe2_Components_DIR/Makefile.inc
-#RUN sed -i "s/clean::/clean:/g" $MARTe2_Components_DIR/Makefile.inc
-## Build MARTe2 Components
-#RUN cd $MARTe2_Components_DIR && \
-#    make -f Makefile.inc
+#+-------------------------+
+#|    MARTe2 Components    |
+#+-------------------------+
+# Clone MARTe2 Components repository
+ENV MARTe2_Components_DIR=$HOME/MARTe2-components
+RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-components $MARTe2_Components_DIR
+# Remove tests
+RUN sed -i "s/core test/core/g" $MARTe2_Components_DIR/Makefile.inc
+RUN sed -i "s/clean::/clean:/g" $MARTe2_Components_DIR/Makefile.inc
+# Build MARTe2 Components
+RUN cd $MARTe2_Components_DIR && \
+    make -f Makefile.inc
 
 # Activate interaction with apt
 ENV DEBIAN_FRONTEND=dialog
