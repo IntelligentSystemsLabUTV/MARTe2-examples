@@ -246,7 +246,7 @@ RUN wget https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-demos-padova/raw/develop
 # Clone MARTe2 Core repository
 ENV TARGET=armv8-linux
 ENV MARTe2_DIR=$HOME/MARTe2-armv8
-RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2 $MARTe2_DIR
+RUN git clone https://github.com/alessandrotenaglia/MARTe2-armv8.git $MARTe2_DIR
 # Build MARTe2 Core
 RUN cd $MARTe2_DIR && \
     make -f Makefile.armv8-linux
