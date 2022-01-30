@@ -1,0 +1,38 @@
+{
+    "name": "mytree",
+    "usage": "tree",
+    "subnodes": [
+        {
+            "name": "node1",
+            "usage": "structure",
+            "subnodes": [
+                {
+                    "name": "num1",
+                    "usage": "numeric",
+                    "subnodes": []
+                },
+                {
+                    "name": "sig1",
+                    "usage": "signal",
+                    "subnodes": []
+                }
+             ]
+        },
+        {
+            "name": "node2",
+            "usage": "structure",
+            "subnodes": [
+                {
+                    "name": "num2",
+                    "usage": "numeric",
+                    "subnodes": []
+                },
+                {
+                    "name": "sig2",
+                    "usage": "signal",
+                    "subnodes": []
+                }
+             ]
+        }
+    ]
+}
