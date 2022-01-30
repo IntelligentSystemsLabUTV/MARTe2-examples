@@ -124,8 +124,20 @@ RUN apt-get update && apt-get install -y \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
 # Set JAVA_HOME
-RUN echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /etc/environment && \
+RUN echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-armhf" >> /etc/environment && \
     . /etc/environment
+
+#+-----------+
+#|    Zsh    |
+#+-----------+
+# Install Zsh
+RUN apt-get update && apt-get install -y \
+    zsh \
+    zsh-doc \
+    chroma && \
+    apt-get autoclean && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #+------------+
 #|    User    |
@@ -143,12 +155,29 @@ USER $USERNAME
 ENV HOME=/home/$USERNAME
 WORKDIR $HOME
 
+#+-----------------+
+#|    Oh-My-Zsh    |
+#+-----------------+
+ENV ZSH=$HOME/.oh-my-zsh
+ARG ZSH_CUSTOM=$ZSH/custom
+RUN wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh || true
+RUN \
+    ZSH_PLUGINS=$ZSH_CUSTOM/plugins \
+    && ZSH_THEMES=$ZSH_CUSTOM/themes \
+    && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
+    && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+    && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
+COPY --chown=$USER_UID:$USER_GID .zshrc $HOME
+COPY --chown=$USER_UID:$USER_GID .aliases.zsh $HOME
+COPY --chown=$USER_UID:$USER_GID .p10k.zsh $HOME
+
 #+------------------+
 #|    Miniconda3    |
 #+------------------+
 # Install Miniconda 3
-RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $HOME/miniconda.sh && \
-    /bin/bash $HOME/miniconda.sh -b -p $HOME/miniconda3
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $HOME/miniconda.sh && \
+    /bin/bash $HOME/miniconda.sh -b -p $HOME/miniconda3 && \
+    rm -rf miniconda.sh
 ENV PATH=$PATH:$HOME/miniconda3/bin
 # Setup conda
 RUN chown -R $USER_UID:$USER_GID $HOME/miniconda3/ && \ 
@@ -164,7 +193,7 @@ RUN conda create --name myenv python=3.6 && \
 #+---------------+
 # Install MDSplus
 ENV MDSPLUS_DIR=$HOME/mdsplus
-RUN git clone https://github.com/MDSplus/mdsplus $HOME/mdsplus-alpha && \
+RUN git clone https://github.com/MDSplus/mdsplus.git $HOME/mdsplus-alpha && \
     cd mdsplus-alpha && \
     ./bootstrap && \
     mkdir build && \
@@ -207,49 +236,49 @@ ENV SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 ENV SDN_CORE_INCLUDE_DIR=$SDN_CORE_DIR/src/main/c++/include/
 ENV SDN_CORE_LIBRARY_DIR=$SDN_CORE_DIR/target/lib/
 RUN wget https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-demos-padova/raw/develop/Other/SDN_1.0.12_nonCCS.tar.gz -O $HOME/SDN_1.0.12_nonCCS.tar.gz && \
-    tar -zxvf $HOME/SDN_1.0.12_nonCCS.tar.gz -C $SDN_CORE_DIR && \
-    cd $SDN_CORE_DIR && \
-    make && \
+    mkdir $SDN_CORE_DIR && \
+    tar -xzf $HOME/SDN_1.0.12_nonCCS.tar.gz -C $HOME && \
     rm -rf $HOME/SDN_1.0.12_nonCCS.tar.gz
 
 #+--------------+
 #|    MARTe2    |
 #+--------------+
-# Clone MARTe2 Core repository and change branch
+# Clone MARTe2 Core repository
 ENV TARGET=armv8-linux
-ENV MARTe2_DIR=$HOME/MARTe2
-RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2 $MARTe2_DIR && \
-    cd $MARTe2_DIR && \
-    git checkout develop-armv8-linux
-# Change MakeDefaults
-RUN sed -i "s/-Werror -Wno-invalid-offsetof/-Wno-error -Wno-invalid-offsetof -fpermissive/g" $MARTe2_DIR/MakeDefaults/MakeStdLibDefs.armv8-linux
-RUN sed -i "s/-lrt/-lrt -lncurses/g" $MARTe2_DIR/MakeDefaults/MakeStdLibDefs.armv8-linux
-# Remove tests
-RUN sed -i "s/gtest core test/core/g" $MARTe2_DIR/Makefile.inc
+ENV MARTe2_DIR=$HOME/MARTe2-armv8
+RUN git clone https://github.com/alessandrotenaglia/MARTe2-armv8.git $MARTe2_DIR
 # Build MARTe2 Core
-RUN make -f $MARTe2_DIR/Makefile.armv8-linux
+RUN cd $MARTe2_DIR && \
+    make -f Makefile.armv8-linux
 
 #+-----------------------+
 #|    MARTe2 Examples    |
 #+-----------------------+
 # Clone MARTe2 Examples repository
 ENV MARTe2_Examples_DIR=$HOME/MARTe2-examples
-RUN git clone https://github.com/IntelligentSystemsLabUTV/MARTe2-examples $MARTe2_Examples_DIR
+RUN git clone https://github.com/IntelligentSystemsLabUTV/MARTe2-examples.git $MARTe2_Examples_DIR
+# Build MARTe2 Examples
+RUN cd $MARTe2_Examples_DIR/MARTe2 && \
+    make -f Makefile.armv8-linux
 # Untar MATLAB includes
 ENV MATLAB_DIR=$HOME/MATLAB
-RUN tar -xzf $MARTe2_Examples_DIR/MATLAB/Include.tar.gz -C $MATLAB_DIR/
-
+RUN mkdir $MATLAB_DIR && \
+    tar -xzf $MARTe2_Examples_DIR/MATLAB/Include.tar.gz -C $MATLAB_DIR
 #+-------------------------+
 #|    MARTe2 Components    |
 #+-------------------------+
 # Clone MARTe2 Components repository
 ENV MARTe2_Components_DIR=$HOME/MARTe2-components
-RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-components $MARTe2_Components_DIR
+RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-components.git $MARTe2_Components_DIR
 # Remove tests
 RUN sed -i "s/core test/core/g" $MARTe2_Components_DIR/Makefile.inc
+RUN sed -i "s/clean::/clean:/g" $MARTe2_Components_DIR/Makefile.inc
 # Build MARTe2 Components
-RUN make -f $MARTe2_Components_DIR/Makefile.inc
+RUN cd $MARTe2_Components_DIR && \
+    make -f Makefile.inc
 
 # Activate interaction with apt
 ENV DEBIAN_FRONTEND=dialog
-WORKDIR $HOME
+
+# Set default shell to start
+CMD ["zsh"]
