@@ -11,8 +11,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=en_US.UTF-8
 RUN apt-get update && apt-get install -y \
     locales && \
-    locale-gen en_US.UTF-8 && \
-    update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 && \
+    locale-gen $LANG && \
+    update-locale LC_ALL=$LANG LANG=$LANG && \
     apt-get autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
@@ -118,13 +118,14 @@ RUN sed -i "s/# deb-src/deb-src/g" /etc/apt/sources.list && \
 #+------------+
 # Install Java
 RUN apt-get update && apt-get install -y \
-    default-jre \
-    default-jdk && \
+    openjdk-11-jre \
+    openjdk-11-jdk && \
     apt-get autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
 # Set JAVA_HOME
-RUN echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-armhf" >> /etc/environment && \
+RUN update-alternatives --set java $(update-alternatives --list java | grep "java-11") && \
+    echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-armhf" >> /etc/environment && \
     . /etc/environment
 
 #+-----------+
@@ -142,7 +143,7 @@ RUN apt-get update && apt-get install -y \
 #+------------+
 #|    User    |
 #+------------+
-ARG USERNAME=marte2
+ARG USERNAME=marte
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 # Create a non-root sudo user
@@ -154,6 +155,12 @@ RUN groupadd --gid $USER_GID $USERNAME && \
 USER $USERNAME
 ENV HOME=/home/$USERNAME
 WORKDIR $HOME
+# Create workspace directory: host workspaces will be mounted here
+RUN mkdir workspace
+# Copy user configuration files
+COPY --chown=$USER_UID:$USER_GID config-armv8/.nanorc ./
+# Create user SSH directory
+RUN mkdir .ssh
 
 #+-----------------+
 #|    Oh-My-Zsh    |
@@ -167,9 +174,9 @@ RUN \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
-COPY --chown=$USER_UID:$USER_GID .zshrc $HOME
-COPY --chown=$USER_UID:$USER_GID .aliases.zsh $HOME
-COPY --chown=$USER_UID:$USER_GID .p10k.zsh $HOME
+COPY --chown=$USER_UID:$USER_GID config-armv8/.zshrc $HOME
+COPY --chown=$USER_UID:$USER_GID config-armv8/.aliases.zsh $HOME
+COPY --chown=$USER_UID:$USER_GID config-armv8/.p10k.zsh $HOME
 
 #+------------------+
 #|    Miniconda3    |
@@ -218,7 +225,6 @@ RUN . activate myenv && \
 #+-------------+
 #|    OPCUA    |
 #+-------------+
-# Install OPCUA
 ENV OPEN62541_DIR=$HOME/open62541
 ENV OPEN62541_LIB=$OPEN62541_DIR/build/bin
 ENV OPEN62541_INCLUDE=$OPEN62541_DIR/build
@@ -231,7 +237,6 @@ RUN git clone -b 1.1 https://github.com/open62541/open62541.git $OPEN62541_DIR &
 #+-----------+
 #|    SDN    |
 #+-----------+
-# Install SDN
 ENV SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 ENV SDN_CORE_INCLUDE_DIR=$SDN_CORE_DIR/src/main/c++/include/
 ENV SDN_CORE_LIBRARY_DIR=$SDN_CORE_DIR/target/lib/
@@ -241,29 +246,24 @@ RUN wget https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-demos-padova/raw/develop
     rm -rf $HOME/SDN_1.0.12_nonCCS.tar.gz
 
 #+--------------+
+#|    MATLAB    |
+#+--------------+
+ENV MATLAB_DIR=$HOME/MATLAB
+COPY --chown=$USER_UID:$USER_GID MATLAB/Include.tar.gz $HOME
+RUN mkdir $MATLAB_DIR && \
+    tar -xzf $HOME/Include.tar.gz -C $MATLAB_DIR && \
+    rm -rf $HOME/Include.tar.gz
+
+#+--------------+
 #|    MARTe2    |
 #+--------------+
 # Clone MARTe2 Core repository
 ENV TARGET=armv8-linux
 ENV MARTe2_DIR=$HOME/MARTe2-armv8
-RUN git clone https://github.com/alessandrotenaglia/MARTe2-armv8.git $MARTe2_DIR
+RUN git clone https://git.frascati.enea.it/alessandro.tenaglia/MARTe2-armv8.git $MARTe2_DIR
 # Build MARTe2 Core
 RUN cd $MARTe2_DIR && \
     make -f Makefile.armv8-linux
-
-#+-----------------------+
-#|    MARTe2 Examples    |
-#+-----------------------+
-# Clone MARTe2 Examples repository
-ENV MARTe2_Examples_DIR=$HOME/MARTe2-examples
-RUN git clone https://github.com/IntelligentSystemsLabUTV/MARTe2-examples.git $MARTe2_Examples_DIR
-# Build MARTe2 Examples
-RUN cd $MARTe2_Examples_DIR/MARTe2 && \
-    make -f Makefile.armv8-linux
-# Untar MATLAB includes
-ENV MATLAB_DIR=$HOME/MATLAB
-RUN mkdir $MATLAB_DIR && \
-    tar -xzf $MARTe2_Examples_DIR/MATLAB/Include.tar.gz -C $MATLAB_DIR
 
 #+-------------------------+
 #|    MARTe2 Components    |
