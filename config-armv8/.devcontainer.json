@@ -1,32 +1,51 @@
 {
-    // Development environment target configuration
-    "name": "ros2vsc-dev",
-    "dockerComposeFile": ["../docker-compose.yml"],
-    "service": "ros2vsc-dev",
-    // Only start this service
-    "runServices": ["ros2vsc-dev"],
-    // Stop container if VS Code is shut down
-    "shutdownAction": "stopCompose",
-    "extensions": [
-      "ms-python.python",
-      "ms-vscode.cpptools",
-      "twxs.cmake",
-      "ms-vscode.cmake-tools",
-      "yzhang.markdown-all-in-one",
-      "gruntfuggly.todo-tree",
-      "eamodio.gitlens",
-      "github.vscode-pull-request-github"
-    ],
-    "settings": {
-      // Use Zsh also in VS Code
-      // "terminal.integrated.shell.linux": "/bin/zsh"
-      "terminal.integrated.defaultProfile.linux": "zsh",
-      "terminal.integrated.profiles.linux": {
-        "zsh": {
-          "path": "/bin/zsh"
-        },
-      }
-    },
-    // Start the VS Code instance in the container's workspace
-    "workspaceFolder": "/home/ros/workspace"
-  }
+  // Development environment target configuration
+  "name": "marte2-armv8",
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
+  "service": "marte2-armv8",
+  // Only start this service
+  "runServices": [
+    "marte2-armv8"
+  ],
+  // Stop container if VS Code is shut down
+  "shutdownAction": "stopCompose",
+  "extensions": [
+    "ms-python.python",
+    "ms-vscode.cpptools",
+    "twxs.cmake",
+    "ms-vscode.cmake-tools",
+    "yzhang.markdown-all-in-one",
+    "gruntfuggly.todo-tree",
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+    "davidanson.vscode-markdownlint",
+    "dotjoshjohnson.xml",
+    "timonwong.shellcheck",
+    "aaron-bond.better-comments",
+    "jeff-hykin.better-syntax",
+    "donjayamanne.githistory",
+    "shaharkazaz.git-merger",
+    "tomoki1207.pdf",
+    "13xforever.language-x86-64-assembly",
+    "redhat.vscode-yaml",
+    "dan-c-underwood.arm",
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag"
+  ],
+  "settings": {
+    // Use Zsh also in VS Code
+    // "terminal.integrated.shell.linux": "/bin/zsh"
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "terminal.integrated.profiles.linux": {
+      "zsh": {
+        "path": "/bin/zsh"
+      },
+    }
+  },
+  // Start the VS Code instance in the container's workspace
+  "workspaceFolder": "/home/marte/workspace",
+  // Creates a sleeping process that VSC uses to stop the container
+  "overrideCommand": true
+}
