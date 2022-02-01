@@ -1,0 +1,32 @@
+# MARTe2 example development environment Compose file.
+#
+# Roberto Masocco <robmasocco@gmail.com>
+# Alessandro Tenaglia <alessandro.tenaglia42@gmail.com>
+#
+# January 31, 2022
+
+version: "3.9"
+
+# VS Code Development target
+services:
+  marte2-armv8:
+    build:
+      context: .
+      network: host
+    network_mode: "host"
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      TERM: xterm-256color
+      DISPLAY:
+    cap_add:
+      - SYS_PTRACE
+    user: marte
+    stdin_open: false
+    tty: true
+    volumes:
+      - ~/.ssh:/home/marte/.ssh:ro
+      - ./config/zsh_history:/home/marte/zsh_history
+      - type: bind
+        source: ./
+        target: /home/ros/workspace
