@@ -271,13 +271,12 @@ RUN cd $MARTe2_DIR && \
 # Clone MARTe2 Components repository
 ENV MARTe2_Components_DIR=$HOME/MARTe2-components
 RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-components.git $MARTe2_Components_DIR
-# Remove tests
-RUN sed -i "s/core test/core/g" $MARTe2_Components_DIR/Makefile.inc
-RUN sed -i "s/clean::/clean:/g" $MARTe2_Components_DIR/Makefile.inc
-# Add lib BitSet to MDSWriter
-RUN sed -i "s/.../#include "BitSet.h"/g" $MARTe2_Components_DIR/Makefile.inc
-# Add ProcessorType to SDNSubscriber.cpp
-RUN sed -i "s/BitSet(cpuMask)/ProcessorType(BitSet(cpuMask))/g" $MARTe2_Components_DIR/Makefile.inc
+# Fix Makefile.inc targets
+RUN sed -i "s/core test/core/g" $MARTe2_Components_DIR/Makefile.inc && \
+    sed -i "s/clean::/clean:/g" $MARTe2_Components_DIR/Makefile.inc
+# Remove hardcoded x86-linux
+RUN sed -i "/TARGET=x86-linux/d" $MARTe2_Components_DIR/Source/Components/DataSources/Makefile.gcc && \
+    sed -i "/TARGET=x86-linux/d" $MARTe2_Components_DIR/Source/Components/DataSources/UDP/Makefile.gcc
 # Build MARTe2 Components
 RUN cd $MARTe2_Components_DIR && \
     make -f Makefile.inc
