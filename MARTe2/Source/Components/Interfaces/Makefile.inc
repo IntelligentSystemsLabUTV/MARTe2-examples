@@ -22,9 +22,11 @@
 #
 #############################################################
 
-SPB = TCPSocketMessageProxy.x
-
 PACKAGE = Components
+
+OBJSX = 
+
+SPB = TCPSocketMessageProxy.x
 
 ROOT_DIR = ../../..
 
@@ -34,9 +36,9 @@ include $(MAKEDEFAULTDIR)/MakeStdLibDefs.$(TARGET)
 
 LIBRARIES_STATIC+=$(BUILD_DIR)/TCPSocketMessageProxy/TCPSocketMessageProxy$(LIBEXT)
 
-all: $(OBJS)  $(SUBPROJ) \
+all: $(OBJS) $(SUBPROJ) \
 	$(BUILD_DIR)/Interfaces$(LIBEXT) \
 	$(BUILD_DIR)/Interfaces$(DLLEXT)
-	echo  $(OBJS)
+	echo $(OBJS)
 
 include $(MAKEDEFAULTDIR)/MakeStdLibRules.$(TARGET)

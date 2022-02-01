@@ -22,16 +22,26 @@
 #
 #############################################################
 
-SPB = Source/Components/Interfaces.x
+OBJSX = 
 
-MAKEDEFAULTDIR = $(MARTe2_DIR)/MakeDefaults
+SPBM = Source/Components/Interfaces.x
+
+SUBPROJMAIN=$(SPBM:%.x=%.spb)
+SUBPROJMAINCLEAN=$(SPBM:%.x=%.spc)
 
 ROOT_DIR = .
 
+MAKEDEFAULTDIR = $(MARTe2_DIR)/MakeDefaults
+
 include $(MAKEDEFAULTDIR)/MakeStdLibDefs.$(TARGET)
 
-all: $(OBJS) $(SUBPROJ) check-env
+all: $(OBJS) core
 	echo  $(OBJS)
+
+core: $(SUBPROJMAIN) check-env
+    echo  $(SUBPROJMAIN)
+
+clean: $(SUBPROJMAINCLEAN) clean_wipe_old
 
 include $(MAKEDEFAULTDIR)/MakeStdLibRules.$(TARGET)
 

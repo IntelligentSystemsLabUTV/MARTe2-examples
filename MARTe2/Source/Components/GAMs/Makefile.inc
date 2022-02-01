@@ -22,9 +22,11 @@
 #
 #############################################################
 
-SPB = 
-
 PACKAGE = Components
+
+OBJSX = 
+
+SPB = 
 
 ROOT_DIR = ../../..
 
@@ -32,9 +34,9 @@ MAKEDEFAULTDIR=$(MARTe2_DIR)/MakeDefaults
 
 include $(MAKEDEFAULTDIR)/MakeStdLibDefs.$(TARGET)
 
-all: $(OBJS)  $(SUBPROJ) \
+all: $(OBJS) $(SUBPROJ) \
 	$(BUILD_DIR)/GAMs$(LIBEXT) \
 	$(BUILD_DIR)/GAMs$(DLLEXT)
-	echo  $(OBJS)
+	echo $(OBJS)
 
 include $(MAKEDEFAULTDIR)/MakeStdLibRules.$(TARGET)
