@@ -1,62 +1,6 @@
-#+-------------+
-#|    C/C++    |
-#+-------------+
-# Prerequisites
-*.d
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-# Precompiled Headers
-*.gch
-*.pch
-# Fortran module files
-*.mod
-*.smod
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-# Executables
-*.exe
-*.out
-*.app
-
-#+---------------+
-#|    VS Code    |
-#+---------------+
+# VS CODE
 .vscode
 # Local History for Visual Studio Code
 .history/
 # Built Visual Studio Code Extensions
 *.vsix
-
-#+--------------+
-#|    MATLAB    |
-#+--------------+
-*.mat
-*_ert_shrlib_rtw
-# Windows default autosave extension
-*.asv
-# OSX / *nix default autosave extension
-*.m~
-# Compiled MEX binaries (all platforms)
-*.mex*
-# Packaged app and toolbox files
-*.mlappinstall
-*.mltbx
-# Generated helpsearch folders
-helpsearch*/
-# Simulink code generation folders
-slprj/
-sccprj/
-# Matlab code generation folders
-codegen/
-# Simulink autosave extension
-*.autosave
-# Simulink cache files
-*.slxc
-# Octave session info
-octave-workspace

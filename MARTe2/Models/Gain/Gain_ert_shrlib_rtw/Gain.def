@@ -1,0 +1,15 @@
+        {
+            global:
+    Gain_initialize;
+            Gain_step;
+        Gain;
+
+
+                            Gain_P;
+        Gain_GetCAPIStaticMap;
+
+        malloc;
+
+        local:
+        *;
+    };
