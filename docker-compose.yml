@@ -12,6 +12,7 @@ services:
   marte2-armv8:
     build:
       context: .
+      dockerfile: Dockerfile.armv8
       network: host
     network_mode: "host"
     security_opt:
@@ -27,6 +28,10 @@ services:
     volumes:
       - ~/.ssh:/home/marte/.ssh:ro
       - ./config/zsh_history:/home/marte/zsh_history
+      - ./config/.aliases.zsh:/home/marte/.aliases.zsh
+      - ./config/.nanorc:/home/marte/.nanorc
+      - ./config/.p10k.zsh:/home/marte/.p10k.zsh
+      - ./config/.zshrc:/home/marte/.zshrc
       - type: bind
         source: ./
         target: /home/ros/workspace
