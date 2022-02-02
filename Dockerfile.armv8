@@ -36,6 +36,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
 # Install basic utilities
 RUN apt-get update && apt-get install -y \
     apt-utils \
+    bc \
     bison \
     build-essential \
     curl \
@@ -241,8 +242,8 @@ ENV SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 ENV SDN_CORE_INCLUDE_DIR=$SDN_CORE_DIR/src/main/c++/include/
 ENV SDN_CORE_LIBRARY_DIR=$SDN_CORE_DIR/target/lib/
 RUN wget https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-demos-padova/raw/develop/Other/SDN_1.0.12_nonCCS.tar.gz -O $HOME/SDN_1.0.12_nonCCS.tar.gz && \
-    mkdir $SDN_CORE_DIR && \
     tar -xzf $HOME/SDN_1.0.12_nonCCS.tar.gz -C $HOME && \
+    make && \
     rm -rf $HOME/SDN_1.0.12_nonCCS.tar.gz
 
 #+--------------+
@@ -260,7 +261,7 @@ RUN mkdir $MATLAB_DIR && \
 # Clone MARTe2 Core repository
 ENV TARGET=armv8-linux
 ENV MARTe2_DIR=$HOME/MARTe2-armv8
-RUN git clone https://git.frascati.enea.it/alessandro.tenaglia/MARTe2-armv8.git $MARTe2_DIR
+RUN git clone -c http.sslverify=false https://git.frascati.enea.it/alessandro.tenaglia/MARTe2-armv8.git $MARTe2_DIR
 # Build MARTe2 Core
 RUN cd $MARTe2_DIR && \
     make -f Makefile.armv8-linux
@@ -278,6 +279,7 @@ RUN sed -i "s/core test/core/g" $MARTe2_Components_DIR/Makefile.inc && \
 RUN sed -i "/TARGET=x86-linux/d" $MARTe2_Components_DIR/Source/Components/DataSources/Makefile.gcc && \
     sed -i "/TARGET=x86-linux/d" $MARTe2_Components_DIR/Source/Components/DataSources/UDP/Makefile.gcc
 # Build MARTe2 Components
+RUN env
 RUN cd $MARTe2_Components_DIR && \
     make -f Makefile.inc
 
