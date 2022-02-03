@@ -26,7 +26,11 @@ services:
     tty: true
     volumes:
       - ~/.ssh:/home/marte/.ssh:ro
-      - ./config/zsh_history:/home/marte/zsh_history
+      - ./config-armv8/zsh_history:/home/marte/zsh_history
+      - ./config-armv8/.aliases.zsh:/home/marte/.aliases.zsh
+      - ./config-armv8/.nanorc:/home/marte/.nanorc
+      - ./config-armv8/.p10k.zsh:/home/marte/.p10k.zsh
+      - ./config-armv8/.zshrc:/home/marte/.zshrc
       - type: bind
         source: ./
-        target: /home/ros/workspace
+        target: /home/marte/workspace
