@@ -12,6 +12,7 @@ services:
   marte2-armv8:
     build:
       context: .
+      dockerfile: Dockerfile.armv8
       network: host
     network_mode: "host"
     security_opt:
