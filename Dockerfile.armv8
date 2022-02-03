@@ -1,3 +1,24 @@
+# Example development environment
+#
+# Alessandro Tenaglia <alessandro.tenaglia42@gmail.com>
+# Roberto Masocco <robmasocco@gmail.com>
+#
+# January 25, 2022
+
+# RUN THIS WITH:
+# --network host
+# --user marte
+# -v ~/.ssh:/home/$USERNAME/.ssh:ro
+# -v config-armv8/.aliases.sh:/home/$USERNAME/.aliases.sh
+# -v config-armv8/.nanorc:/home/$USERNAME/.nanorc
+# -v config-armv8/.p10k.zsh:/home/$USERNAME/.p10k.zsh
+# -v config-armv8/.zshrc:/home/$USERNAME/.zshrc
+# -v config-armv8/zsh_history:/home/$USERNAME/zsh_history
+# If your terminal emulator supports colors also add:
+# --env TERM=xterm-256color
+# If you want to start GUI-based applications also add:
+# --env="DISPLAY"
+
 FROM arm32v7/ubuntu:20.04
 LABEL maintainer="Alessandro Tenaglia <alessandro.tenaglia@uniroma2.it>"
 
@@ -157,7 +178,7 @@ USER $USERNAME
 ENV HOME=/home/$USERNAME
 WORKDIR $HOME
 # Create workspace directory: host workspaces will be mounted here
-RUN mkdir workspace
+RUN mkdir $HOME/workspace
 # Copy user configuration files
 COPY --chown=$USER_UID:$USER_GID config-armv8/.nanorc ./
 # Create user SSH directory
@@ -166,6 +187,9 @@ RUN mkdir .ssh
 #+-----------------+
 #|    Oh-My-Zsh    |
 #+-----------------+
+# Set Zsh as shell
+RUN chsh -s /usr/bin/zsh $USERNAME
+# Configure Zsh
 ENV ZSH=$HOME/.oh-my-zsh
 ARG ZSH_CUSTOM=$ZSH/custom
 RUN wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh || true
@@ -176,7 +200,7 @@ RUN \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
 COPY --chown=$USER_UID:$USER_GID config-armv8/.zshrc $HOME
-COPY --chown=$USER_UID:$USER_GID config-armv8/.aliases.zsh $HOME
+COPY --chown=$USER_UID:$USER_GID config-armv8/.aliases.sh $HOME
 COPY --chown=$USER_UID:$USER_GID config-armv8/.p10k.zsh $HOME
 
 #+------------------+
@@ -280,9 +304,18 @@ RUN sed -i "s/core test/core/g" $MARTe2_Components_DIR/Makefile.inc && \
 RUN sed -i "/TARGET=x86-linux/d" $MARTe2_Components_DIR/Source/Components/DataSources/Makefile.gcc && \
     sed -i "/TARGET=x86-linux/d" $MARTe2_Components_DIR/Source/Components/DataSources/UDP/Makefile.gcc
 # Build MARTe2 Components
-RUN env
 RUN cd $MARTe2_Components_DIR && \
-    make -f Makefile.inc
+    make -f Makefile.gcc
+
+#+------------+
+#|    Mak1    |
+#+------------+
+# Clone Mak1 repo
+ENV MAK1_DIR=$HOME/Mak1
+RUN git clone https://git.frascati.enea.it/luca.boncagni/mak1.git $MAK1_DIR
+# Build MARTe2 Components
+RUN cd $MAK1_DIR/MARTe2 && \
+    make -f Makefile.gcc
 
 # Activate interaction with apt
 ENV DEBIAN_FRONTEND=dialog
