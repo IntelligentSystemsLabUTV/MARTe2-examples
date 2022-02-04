@@ -6,6 +6,49 @@
 
 - Each state contains one, or more, **StateMachineEvent** elements.
 
+``` cpp
++StateMachine = {
+    Class = StateMachine
+    +STATE1 = {
+        Class = ReferenceContainer
+        +GOTOSTATE2 = {
+            Class = StateMachineEvent
+            ...
+        }
+        ...
+        +GOTOERROR = {
+            Class = StateMachineEvent
+            ...
+        }
+    }
+    +STATE2 = {
+        Class = ReferenceContainer
+        +GOTOSTATE1 = {
+            Class = StateMachineEvent
+            ...
+        }
+        ...
+        +GOTOERROR = {
+            Class = StateMachineEvent
+            ...
+        }
+    }
+    ...
+    +ERROR ={
+        Class = ReferenceContainer
+        +ENTER = {
+            Class = StateMachineEvent
+            ...
+        }
+        ...
+        +RESET = {
+            Class = StateMachineEvent
+            ...
+        }
+    }
+}
+```
+
 - The **StateMachine** allows to associate the sending of **Messages** to **StateMachineEvents**.
 
 - Upon receiving of a **Message**, the **StateMachine** will verify if the **Message** function is equal to the name of any of the declared **StateMachineEvent** elements for the current StateMachine state.
@@ -13,49 +56,178 @@ If it is, the **StateMachine** will change to the declared state and trigger any
 
 - 
 
-``` ruby
+# Example
+
+``` cpp
+/* State Machine */
 +StateMachine = {
-   Class = StateMachine
-   +STATE1 = {
-      Class = ReferenceContainer
-      +GOTOSTATE2 = {
-         Class = StateMachineEvent
-         NextState = "STATE2"
-         NextStateError = "ERROR"
-         Timeout = 0
-         +DoSomething = {
-             Class = Message
-             Destination = Receiver1
-             Mode = ExpectsReply
-             Function = DoSomething
-             +Parameters = {
-                 Class = ConfigurationDatabase
-                 param = ...
-             }
-         }
-         +DoSomethingElse = {
-             Class = Message
-             Destination = Receiver1
-             Mode = ExpectsReply
-             Function = DoSomethingElse
-         }
-      }
-      +ERROR = {
-         Class = StateMachineEvent
-         NextState = "STATE3"
-         NextStateError = "ERROR"
-         Timeout = 0
-         +DoSomething = {
-             Class = Message
-             Destination = Receiver1
-             Mode = ExpectsReply
-             Function = Function1
-             +Parameters = {
-                 Class = ConfigurationDatabase
-                 param1 = 4
-                 param2 = 5.312
-             }
-         }
-      }
-      ...
+    Class = StateMachine
+    /* State1 */
+    +INITIAL = {
+        Class = ReferenceContainer
+        /* State Events */
+        +START = {
+            Class = StateMachineEvent
+            NextState = IDLE
+            NextStateError = ERROR
+            Timeout = 0
+            +PrepareChangeToIdleMsg = {
+                Class = Message
+                Destination = TestApp
+                Mode = ExpectsReply
+                Function = PrepareNextState
+                +Parameters = {
+                    Class = ConfigurationDatabase
+                    param1 = Idle
+                }
+            }
+            +StopCurrentStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StopCurrentStateExecution
+                Mode = ExpectsReply
+            }
+            +StartNextStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StartNextStateExecution
+                Mode = ExpectsReply
+            }
+        }
+        +GOTOERROR = {
+            Class = StateMachineEvent
+            NextState = "ERROR"
+            NextStateError = "ERROR"
+        }
+    }
+    +IDLE = {
+        Class = ReferenceContainer
+        /* State Events */
+        +GOTORUN = {
+            Class = StateMachineEvent
+            NextState = RUN
+            NextStateError = ERROR
+            Timeout = 0
+            +PrepareChangeToRunMsg = {
+                Class = Message
+                Destination = TestApp
+                Mode = ExpectsReply
+                Function = PrepareNextState
+                +Parameters = {
+                    Class = ConfigurationDatabase
+                    param1 = Run
+                }
+            }
+            +StopCurrentStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StopCurrentStateExecution
+                Mode = ExpectsReply
+            }
+            +StartNextStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StartNextStateExecution
+                Mode = ExpectsReply
+            }
+        }
+        +GOTOERROR = {
+            Class = StateMachineEvent
+            NextState = "ERROR"
+            NextStateError = "ERROR"
+        }
+    }
+    RUN = {
+        Class = ReferenceContainer
+        /* State Events */
+        +GOTOIDLE = {
+            Class = StateMachineEvent
+            NextState = IDLE
+            NextStateError = ERROR
+            Timeout = 0
+            +PrepareChangeToIdleMsg = {
+                Class = Message
+                Destination = TestApp
+                Mode = ExpectsReply
+                Function = PrepareNextState
+                +Parameters = {
+                    Class = ConfigurationDatabase
+                    param1 = Idle
+                }
+            }
+            +StopCurrentStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StopCurrentStateExecution
+                Mode = ExpectsReply
+            }
+            +StartNextStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StartNextStateExecution
+                Mode = ExpectsReply
+            }
+        }
+        +GOTOERROR = {
+            Class = StateMachineEvent
+            NextState = "ERROR"
+            NextStateError = "ERROR"
+        }
+    }
+    +ERROR = {
+        Class = ReferenceContainer
+        +ENTER =
+            Class = ReferenceContainer
+            +StopCurrentStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StopCurrentStateExecution
+                Mode = ExpectsReply
+            }
+            +PrepareChangeToErrorMsg = {
+                Class = Message
+                Destination = TestApp
+                Mode = ExpectsReply
+                Function = PrepareNextState
+                +Parameters = {
+                    Class = ConfigurationDatabase
+                    param1 = Error
+                }
+            }
+            +StartNextStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StartNextStateExecution
+                Mode = ExpectsReply
+            }
+        }
+        +RESET = {
+            Class = StateMachineEvent
+            NextState = IDLE
+            NextStateError = IDLE
+            Timeout = 0
+            +StopCurrentStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StopCurrentStateExecution
+                Mode = ExpectsReply
+            }
+            +PrepareChangeToIdleMsg = {
+                Class = Message
+                Destination = TestApp
+                Mode = ExpectsReply
+                Function = PrepareNextState
+                +Parameters = {
+                    Class = ConfigurationDatabase
+                    param1 = Idle
+                }
+            }
+            +StartNextStateExecutionMsg = {
+                Class = Message
+                Destination = TestApp
+                Function = StartNextStateExecution
+                Mode = ExpectsReply
+        }
+    }
+}
 ```
