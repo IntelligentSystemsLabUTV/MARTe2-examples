@@ -1,4 +1,4 @@
-# Example development environment
+# Example development environment for MARTe2
 #
 # Alessandro Tenaglia <alessandro.tenaglia42@gmail.com>
 # Roberto Masocco <robmasocco@gmail.com>
@@ -19,7 +19,7 @@
 # If you want to start GUI-based applications also add:
 # --env="DISPLAY"
 
-FROM arm64v8/ubuntu:20.04
+FROM arm32v7/ubuntu:20.04
 LABEL maintainer="Alessandro Tenaglia <alessandro.tenaglia@uniroma2.it>"
 
 # Remove interaction while installing or upgrading the system via apt
@@ -132,7 +132,7 @@ RUN sed -i "s/# deb-src/deb-src/g" /etc/apt/sources.list && \
     apt-get update && apt-get install -y \
     libcurl4-openssl-dev && \
     dpkg-buildpackage -rfakeroot -b && \
-    dpkg -i ../git_${GIT}_arm64.deb && \
+    dpkg -i ../git_${GIT}_armhf.deb && \
     rm -rf /tmp/git-openssl /var/lib/apt/lists/*
 
 #+------------+
@@ -147,7 +147,7 @@ RUN apt-get update && apt-get install -y \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
 # Set JAVA_HOME
-RUN echo "JAVA_HOME=/usr/lib/jvm/java-${JAVA_VERSION}-openjdk-arm64" >> /etc/environment && \
+RUN echo "JAVA_HOME=/usr/lib/jvm/java-${JAVA_VERSION}-openjdk-armhf" >> /etc/environment && \
     . /etc/environment
 
 #+-----------+
@@ -205,9 +205,9 @@ COPY --chown=$USER_UID:$USER_GID config-armv8/.p10k.zsh $HOME
 #|    Miniconda3    |
 #+------------------+
 # Install Miniconda 3
-RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O $HOME/miniconda.sh && \
+RUN wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-armv7l.sh -O $HOME/miniconda.sh && \
     /bin/bash $HOME/miniconda.sh -b -p $HOME/miniconda3 && \
-    rm -rf miniconda.sh
+    rm -rf $HOME/miniconda.sh
 ENV PATH=$PATH:$HOME/miniconda3/bin
 # Setup conda
 RUN chown -R $USER_UID:$USER_GID $HOME/miniconda3/ && \ 
@@ -215,8 +215,8 @@ RUN chown -R $USER_UID:$USER_GID $HOME/miniconda3/ && \
     conda config --add channels rpi && \
     conda install -y python=3.6
 # Create a new environment and install packages
-RUN conda create --name myenv python=3.6 && \
-    conda install --name myenv numpy
+RUN conda create --name marte_env python=3.6 && \
+    conda install --name marte_env numpy
 
 #+---------------+
 #|    MDSplus    |
@@ -230,14 +230,13 @@ RUN git clone https://github.com/MDSplus/mdsplus.git $HOME/mdsplus-alpha && \
     cd build && \
     ../configure --prefix=$MDSPLUS_DIR && \
     make && \
-    make install && \
-    rm -rf $HOME/mdsplus-alpha
+    make install
 ENV PATH=$PATH:$MDSPLUS_DIR/bin
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MDSPLUS_DIR/lib
 ENV MDS_PATH=$MDSPLUS_DIR/tdi
 ENV CLASSPATH=$MDSPLUS_DIR/java/classes/jScope.jar:$MDSPLUS_DIR/java/classes/jTraverser.jar:$MDSPLUS_DIR/java/classes/jDevices.jar:$MDSPLUS_DIR/java/classes/mdsobjects.jar:$MDSPLUS_DIR/java/classes/jDispatcher.jar
 # Install MDSplus into myenv
-RUN . activate myenv && \
+RUN . activate marte_env && \
     cd $MDSPLUS_DIR/python/MDSplus && \
     python setup.py install && \
     cd $HOME/miniconda3/envs/myenv/lib/python3.6/site-packages/ && \
