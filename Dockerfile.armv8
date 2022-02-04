@@ -132,22 +132,22 @@ RUN sed -i "s/# deb-src/deb-src/g" /etc/apt/sources.list && \
     apt-get update && apt-get install -y \
     libcurl4-openssl-dev && \
     dpkg-buildpackage -rfakeroot -b && \
-    dpkg -i ../git_${GIT}_armhf.deb && \
+    dpkg -i ../git_${GIT}_arm64.deb && \
     rm -rf /tmp/git-openssl /var/lib/apt/lists/*
 
 #+------------+
 #|    Java    |
 #+------------+
 # Install Java
+ENV JAVA_VERSION=11
 RUN apt-get update && apt-get install -y \
-    openjdk-11-jre \
-    openjdk-11-jdk && \
+    openjdk-${JAVA_VERSION}-jre \
+    openjdk-${JAVA_VERSION}-jdk && \
     apt-get autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
 # Set JAVA_HOME
-RUN update-alternatives --set java $(update-alternatives --list java | grep "java-11") && \
-    echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-armhf" >> /etc/environment && \
+RUN echo "JAVA_HOME=/usr/lib/jvm/java-${JAVA_VERSION}-openjdk-arm64" >> /etc/environment && \
     . /etc/environment
 
 #+-----------+
@@ -205,7 +205,7 @@ COPY --chown=$USER_UID:$USER_GID config-armv8/.p10k.zsh $HOME
 #|    Miniconda3    |
 #+------------------+
 # Install Miniconda 3
-RUN wget -q http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-armv7l.sh -O $HOME/miniconda.sh && \
+RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O $HOME/miniconda.sh && \
     /bin/bash $HOME/miniconda.sh -b -p $HOME/miniconda3 && \
     rm -rf miniconda.sh
 ENV PATH=$PATH:$HOME/miniconda3/bin
