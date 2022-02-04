@@ -187,8 +187,6 @@ RUN mkdir .ssh
 #+-----------------+
 #|    Oh-My-Zsh    |
 #+-----------------+
-# Set Zsh as shell
-RUN chsh -s /usr/bin/zsh $USERNAME
 # Configure Zsh
 ENV ZSH=$HOME/.oh-my-zsh
 ARG ZSH_CUSTOM=$ZSH/custom
