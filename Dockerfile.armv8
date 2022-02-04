@@ -19,7 +19,7 @@
 # If you want to start GUI-based applications also add:
 # --env="DISPLAY"
 
-FROM arm32v7/ubuntu:20.04
+FROM arm64v8/ubuntu:20.04
 LABEL maintainer="Alessandro Tenaglia <alessandro.tenaglia@uniroma2.it>"
 
 # Remove interaction while installing or upgrading the system via apt
@@ -284,10 +284,12 @@ RUN mkdir $MATLAB_DIR && \
 # Clone MARTe2 Core repository
 ENV TARGET=armv8-linux
 ENV MARTe2_DIR=$HOME/MARTe2-armv8
-RUN git clone -c http.sslverify=false https://git.frascati.enea.it/alessandro.tenaglia/MARTe2-armv8.git $MARTe2_DIR
+RUN git clone -c http.sslverify=false https://rpi:cRFX1LLn3ntXNE7qEdtj@git.frascati.enea.it/alessandro.tenaglia/MARTe2-armv8.git $MARTe2_DIR
 # Build MARTe2 Core
 RUN cd $MARTe2_DIR && \
     make -f Makefile.armv8-linux
+# Change repo URL to SSH
+RUN git remote set-url origin git@git.frascati.enea.it:alessandro.tenaglia/MARTe2-armv8.git
 
 #+-------------------------+
 #|    MARTe2 Components    |
@@ -303,16 +305,6 @@ RUN sed -i "/TARGET=x86-linux/d" $MARTe2_Components_DIR/Source/Components/DataSo
     sed -i "/TARGET=x86-linux/d" $MARTe2_Components_DIR/Source/Components/DataSources/UDP/Makefile.gcc
 # Build MARTe2 Components
 RUN cd $MARTe2_Components_DIR && \
-    make -f Makefile.gcc
-
-#+------------+
-#|    Mak1    |
-#+------------+
-# Clone Mak1 repo
-ENV MAK1_DIR=$HOME/Mak1
-RUN git clone -c http.sslverify=false https://git.frascati.enea.it/luca.boncagni/mak1.git $MAK1_DIR
-# Build MARTe2 Components
-RUN cd $MAK1_DIR/MARTe2 && \
     make -f Makefile.gcc
 
 # Activate interaction with apt
