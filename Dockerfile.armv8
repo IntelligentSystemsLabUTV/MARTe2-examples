@@ -310,7 +310,7 @@ RUN cd $MARTe2_Components_DIR && \
 #+------------+
 # Clone Mak1 repo
 ENV MAK1_DIR=$HOME/Mak1
-RUN git clone https://git.frascati.enea.it/luca.boncagni/mak1.git $MAK1_DIR
+RUN git clone -c http.sslverify=false https://git.frascati.enea.it/luca.boncagni/mak1.git $MAK1_DIR
 # Build MARTe2 Components
 RUN cd $MAK1_DIR/MARTe2 && \
     make -f Makefile.gcc
