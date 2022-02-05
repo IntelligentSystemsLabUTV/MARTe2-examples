@@ -1,19 +1,20 @@
 #!/bin/bash
 
-#Arguments -l LOADER -f FILENAME -m MESSAGE | -s STATE [-d cgdb|strace]
-#-l LOADER=The Loader to use
-#-f FILENAME=MARTe configuration file
-#-m MESSAGE=Start message
-#-s STATE=RealTimeApplication first state 
-#-d cgdb=Run with cgdb
-#-d strace=Run with strace
+# Arguments -l LOADER -f FILENAME (-m MESSAGE | -s STATE) [-d cgdb|strace]
+# -l LOADER = The Loader to use
+# -f FILENAME = MARTe configuration file
+# -m MESSAGE = Start message
+# -s STATE = RealTimeApplication first state 
+# -d cgdb = Run with cgdb
+# -d strace = Run with strace
 
+# Export env variables
 source MARTe2_setup.sh
 
-#Run with cgdb or strace?
+# Run with cgdb or strace?
 DEBUG=""
 
-#Consume input arguments
+# Consume input arguments
 while [[ $# -gt 1 ]]
 do
 key="$1"
@@ -49,6 +50,7 @@ esac
 shift # past argument or value
 done
 
+# Set LD_LIBRARY_PATH
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
 # MARTe2 Core
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_DIR/Build/$TARGET/Core/
