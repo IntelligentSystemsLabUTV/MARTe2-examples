@@ -1,4 +1,4 @@
-# RT-App: Finite State Machine
+# StateMachine
 
 - The **StateMachine** is a key component which is used in many MARTe applications to synchronise the application state against the external environment.
 
@@ -54,7 +54,15 @@
 - Upon receiving of a **Message**, the **StateMachine** will verify if the **Message** function is equal to the name of any of the declared **StateMachineEvent** elements for the current StateMachine state.
 If it is, the **StateMachine** will change to the declared state and trigger any messages associated to this transition.
 
-- 
+- Each **StateMachineEvent** contains:
+    - `NextState` where to go
+    - `NextStateError` where to go in case of any error
+    - `Timeout` maximum amount of time allowed for the state transition (0 means an infinite time)
+    - One or more **Messages** to send when thr event is triggered.<br>
+      RealTimeState defines the following messages:
+        - `PrepareNextState`: 
+        - `StopCurrentStateExecution`: 
+        - `StartNextStateExecution`: 
 
 # Example
 
