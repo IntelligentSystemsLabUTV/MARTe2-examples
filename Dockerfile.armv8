@@ -259,7 +259,7 @@ ENV CLASSPATH=$MDSPLUS_DIR/java/classes/jScope.jar:$MDSPLUS_DIR/java/classes/jTr
 RUN . activate marte_env && \
     cd $MDSPLUS_DIR/python/MDSplus && \
     python setup.py install && \
-    cd $HOME/miniconda3/envs/myenv/lib/python3.6/site-packages/ && \
+    cd $HOME/miniconda3/envs/marte_env/lib/python3.6/site-packages/ && \
     cp -r $MDSPLUS_DIR/python/MDSplus . && \
     mv MDSplus/MDSplus.egg-info . && \
     . deactivate
