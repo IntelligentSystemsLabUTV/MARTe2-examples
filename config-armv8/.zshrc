@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # Sample Zsh configuration file optimized for development containers.
 #
 # Roberto Masocco <robmasocco@gmail.com>
@@ -17,6 +10,10 @@ fi
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
+
+# This is where command history will be saved on the host
+export HISTFILE=~/zsh_history/.zsh_history
+touch $HISTFILE
 
 # If this is a login shell just set the prompt, basic stuff and get out
 if [[ "$TERM" == "linux" ]]; then
@@ -127,7 +124,7 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 unalias rm
-source $HOME/.aliases.zsh
+source $HOME/.aliases.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

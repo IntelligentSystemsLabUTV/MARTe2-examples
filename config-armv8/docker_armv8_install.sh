@@ -29,16 +29,14 @@ sudo apt-get install -y \
 
 # Download the installation script
 echo "Downloading the installation script..."
-curl -fsSL https://get.docker.com -o get-docker.sh
+curl -fsSL https://get.docker.com -o ~/get-docker.sh
 
-# REBOOT ??
+# N.B. In case of errors, a reboot may be necessary!
 
 # Install Docker
 echo "Installing Docker..."
-sudo sh get-docker.sh
-
-# Docker version
-docker version
+sudo sh ~/get-docker.sh
+rm ~/get-docker.sh
 
 # Install some dependencies for Docker compose
 echo "Installing dependencies for Docker compose..."
