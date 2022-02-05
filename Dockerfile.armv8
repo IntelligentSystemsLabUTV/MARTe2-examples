@@ -7,19 +7,26 @@
 
 # RUN THIS WITH:
 # --network host
-# --user marte
-# -v ~/.ssh:/home/$USERNAME/.ssh:ro
-# -v config-armv8/.aliases.sh:/home/$USERNAME/.aliases.sh
-# -v config-armv8/.nanorc:/home/$USERNAME/.nanorc
-# -v config-armv8/.p10k.zsh:/home/$USERNAME/.p10k.zsh
-# -v config-armv8/.zshrc:/home/$USERNAME/.zshrc
-# -v config-armv8/zsh_history:/home/$USERNAME/zsh_history
 # If your terminal emulator supports colors also add:
 # --env TERM=xterm-256color
 # If you want to start GUI-based applications also add:
 # --env="DISPLAY"
+# --privileged
+# --user marte
+# -v ~/.ssh:/home/$USERNAME/.ssh:ro
+# -v ./config-armv8/.aliases.sh:/home/marte/.aliases.sh
+# -v ./config-armv8/.bashrc:/home/marte/.bashrc
+# -v ./config-armv8/.nanorc:/home/marte/.nanorc
+# -v ./config-armv8/.p10k.zsh:/home/marte/.p10k.zsh
+# -v ./config-armv8/.zshrc:/home/marte/.zshrc
+# -v ./config-armv8/zsh_history:/home/marte/zsh_history
+# -v ./:/home/marte/workspace
 
-FROM arm32v7/ubuntu:20.04
+
+################
+##    BASE    ##
+################
+FROM arm32v7/ubuntu:20.04 as base
 LABEL maintainer="Alessandro Tenaglia <alessandro.tenaglia@uniroma2.it>"
 
 # Remove interaction while installing or upgrading the system via apt
@@ -141,13 +148,13 @@ RUN sed -i "s/# deb-src/deb-src/g" /etc/apt/sources.list && \
 # Install Java
 ENV JAVA_VERSION=11
 RUN apt-get update && apt-get install -y \
-    openjdk-${JAVA_VERSION}-jre \
-    openjdk-${JAVA_VERSION}-jdk && \
+    openjdk-$JAVA_VERSION-jre \
+    openjdk-$JAVA_VERSION-jdk && \
     apt-get autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
 # Set JAVA_HOME
-RUN echo "JAVA_HOME=/usr/lib/jvm/java-${JAVA_VERSION}-openjdk-armhf" >> /etc/environment && \
+RUN echo "JAVA_HOME=/usr/lib/jvm/java-$JAVA_VERSION-openjdk-armhf" >> /etc/environment && \
     . /etc/environment
 
 #+-----------+
@@ -177,12 +184,14 @@ RUN groupadd --gid $USER_GID $USERNAME && \
 USER $USERNAME
 ENV HOME=/home/$USERNAME
 WORKDIR $HOME
-# Create workspace directory: host workspaces will be mounted here
-RUN mkdir $HOME/workspace
 # Copy user configuration files
-COPY --chown=$USER_UID:$USER_GID config-armv8/.nanorc ./
+COPY --chown=$USER_UID:$USER_GID config-armv8/.aliases.sh $HOME
+COPY --chown=$USER_UID:$USER_GID config-armv8/.bashrc $HOME
+COPY --chown=$USER_UID:$USER_GID config-armv8/.nanorc $HOME
 # Create user SSH directory
 RUN mkdir .ssh
+# Create workspace directory: host workspaces will be mounted here
+RUN mkdir $HOME/workspace
 
 #+-----------------+
 #|    Oh-My-Zsh    |
@@ -198,19 +207,30 @@ RUN \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
 COPY --chown=$USER_UID:$USER_GID config-armv8/.zshrc $HOME
-COPY --chown=$USER_UID:$USER_GID config-armv8/.aliases.sh $HOME
 COPY --chown=$USER_UID:$USER_GID config-armv8/.p10k.zsh $HOME
+
+
+###############
+##    DEV    ##
+###############
+FROM base as dev
+
+ARG USERNAME=marte
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+USER $USERNAME
 
 #+------------------+
 #|    Miniconda3    |
 #+------------------+
 # Install Miniconda 3
+ENV MINICONDA_DIR=$HOME/miniconda3
 RUN wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-armv7l.sh -O $HOME/miniconda.sh && \
-    /bin/bash $HOME/miniconda.sh -b -p $HOME/miniconda3 && \
+    /bin/bash $HOME/miniconda.sh -b -p $MINICONDA_DIR && \
     rm -rf $HOME/miniconda.sh
-ENV PATH=$PATH:$HOME/miniconda3/bin
+ENV PATH=$PATH:$MINICONDA_DIR/bin
 # Setup conda
-RUN chown -R $USER_UID:$USER_GID $HOME/miniconda3/ && \ 
+RUN chown -R $USER_UID:$USER_GID $MINICONDA_DIR && \ 
     conda config --set always_yes true && \
     conda config --add channels rpi && \
     conda install -y python=3.6
@@ -280,15 +300,16 @@ RUN mkdir $MATLAB_DIR && \
 #+--------------+
 #|    MARTe2    |
 #+--------------+
+# Fetch git.frascati.enea.it CA
+RUN openssl s_client -showcerts -servername git.frascati.enea.it -connect git.frascati.enea.it:443 </dev/null 2>/dev/null | sed -n -e '/BEGIN\ CERTIFICATE/,/END\ CERTIFICATE/ p'  > .git-frascati-enea-it.pem && \
+    git config --global http."https://git.frascati.enea.it/".sslCAInfo .git-frascati-enea-it.pem
 # Clone MARTe2 Core repository
 ENV TARGET=armv8-linux
 ENV MARTe2_DIR=$HOME/MARTe2-armv8
-RUN git clone -c http.sslverify=false https://rpi:cRFX1LLn3ntXNE7qEdtj@git.frascati.enea.it/alessandro.tenaglia/MARTe2-armv8.git $MARTe2_DIR
+RUN git clone https://rpi:cRFX1LLn3ntXNE7qEdtj@git.frascati.enea.it/alessandro.tenaglia/MARTe2-armv8.git $MARTe2_DIR
 # Build MARTe2 Core
 RUN cd $MARTe2_DIR && \
     make -f Makefile.armv8-linux
-# Change repo URL to SSH
-RUN git remote set-url origin git@git.frascati.enea.it:alessandro.tenaglia/MARTe2-armv8.git
 
 #+-------------------------+
 #|    MARTe2 Components    |
