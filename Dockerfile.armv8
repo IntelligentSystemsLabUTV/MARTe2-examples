@@ -14,12 +14,12 @@
 # --privileged
 # --user marte
 # -v ~/.ssh:/home/$USERNAME/.ssh:ro
+# -v ./config-armv8/zsh_history:/home/marte/zsh_history
 # -v ./config-armv8/.aliases.sh:/home/marte/.aliases.sh
 # -v ./config-armv8/.bashrc:/home/marte/.bashrc
 # -v ./config-armv8/.nanorc:/home/marte/.nanorc
 # -v ./config-armv8/.p10k.zsh:/home/marte/.p10k.zsh
 # -v ./config-armv8/.zshrc:/home/marte/.zshrc
-# -v ./config-armv8/zsh_history:/home/marte/zsh_history
 # -v ./:/home/marte/workspace
 
 
