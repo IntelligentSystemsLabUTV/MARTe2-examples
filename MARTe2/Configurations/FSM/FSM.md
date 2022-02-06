@@ -66,14 +66,13 @@ If it is, the **StateMachine** will change to the declared state and trigger any
 
 # Example
 
-``` cpp
-/* State Machine */
+![FSM Diagram](FSM_diagram.png)
+
+``` ini
 +StateMachine = {
     Class = StateMachine
-    /* State1 */
     +INITIAL = {
         Class = ReferenceContainer
-        /* State Events */
         +START = {
             Class = StateMachineEvent
             NextState = IDLE
@@ -110,7 +109,6 @@ If it is, the **StateMachine** will change to the declared state and trigger any
     }
     +IDLE = {
         Class = ReferenceContainer
-        /* State Events */
         +GOTORUN = {
             Class = StateMachineEvent
             NextState = RUN
@@ -145,9 +143,8 @@ If it is, the **StateMachine** will change to the declared state and trigger any
             NextStateError = "ERROR"
         }
     }
-    RUN = {
+    +RUN = {
         Class = ReferenceContainer
-        /* State Events */
         +GOTOIDLE = {
             Class = StateMachineEvent
             NextState = IDLE
