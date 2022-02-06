@@ -1,4 +1,5 @@
 export TARGET=armv8-linux
+export HOME=/home/marte
 export MDSPLUS_DIR=$HOME/mdsplus
 export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 export MARTe2_DIR=$HOME/MARTe2-armv8
