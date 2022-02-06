@@ -28,13 +28,18 @@ OBJSX =
 
 SPB = TCPSocketMessageProxy.x
 
+ifdef OPEN62541_LIB
+	SPB += OPCUAClient.x
+endif
+
 ROOT_DIR = ../../..
 
 MAKEDEFAULTDIR=$(MARTe2_DIR)/MakeDefaults
 
 include $(MAKEDEFAULTDIR)/MakeStdLibDefs.$(TARGET)
 
-LIBRARIES_STATIC+=$(BUILD_DIR)/TCPSocketMessageProxy/TCPSocketMessageProxy$(LIBEXT)
+LIBRARIES_STATIC += $(BUILD_DIR)/OPCUAClient/OPCUAClient$(LIBEXT)
+LIBRARIES_STATIC += $(BUILD_DIR)/TCPSocketMessageProxy/TCPSocketMessageProxy$(LIBEXT)
 
 all: $(OBJS) $(SUBPROJ) \
 	$(BUILD_DIR)/Interfaces$(LIBEXT) \

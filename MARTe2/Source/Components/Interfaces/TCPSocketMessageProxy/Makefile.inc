@@ -51,11 +51,10 @@ INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L3Services
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L4Messages
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L4StateMachine
 
-
 all: $(OBJS) \
 	$(BUILD_DIR)/TCPSocketMessageProxy$(LIBEXT) \
 	$(BUILD_DIR)/TCPSocketMessageProxy$(DLLEXT)
-	    echo  $(OBJS)
+	echo  $(OBJS)
 
 include depends.$(TARGET)
 

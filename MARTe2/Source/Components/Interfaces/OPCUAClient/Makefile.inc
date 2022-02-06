@@ -58,9 +58,8 @@ LIBRARIES += $(OPEN62541_LIB)/libopen62541$(LIBEXT)
 
 all: $(OBJS) \
 	$(BUILD_DIR)/OPCUAClient$(LIBEXT) \
-	$(BUILD_DIR)/OPCUAClient$(DLLEXT) \
-	$(BUILD_DIR)/OPCUAClient.def
-	echo  $(OBJS)
+	$(BUILD_DIR)/OPCUAClient$(DLLEXT)
+	echo $(OBJS)
 
 include depends.$(TARGET)
 
