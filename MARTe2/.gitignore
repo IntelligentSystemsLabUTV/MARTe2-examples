@@ -26,3 +26,4 @@
 # Build
 Build/
 depends*
+createLibrary
