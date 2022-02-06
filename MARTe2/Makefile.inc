@@ -26,8 +26,8 @@ OBJSX =
 
 SPBM = Source/Components/Interfaces.x
 
-SUBPROJMAIN=$(SPBM:%.x=%.spb)
-SUBPROJMAINCLEAN=$(SPBM:%.x=%.spc)
+SUBPROJMAIN = $(SPBM:%.x=%.spb)
+SUBPROJMAINCLEAN = $(SPBM:%.x=%.spc)
 
 ROOT_DIR = .
 
@@ -39,7 +39,7 @@ all: $(OBJS) core
 	echo  $(OBJS)
 
 core: $(SUBPROJMAIN) check-env
-    echo  $(SUBPROJMAIN)
+	echo $(SUBPROJMAIN)
 
 clean: $(SUBPROJMAINCLEAN) clean_wipe_old
 
