@@ -23,5 +23,6 @@
 *.exe
 *.out
 *.app
-# Build dir
+# Build
 Build/
+depends*
