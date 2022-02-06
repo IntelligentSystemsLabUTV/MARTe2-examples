@@ -213,17 +213,16 @@ COPY --chown=$USER_UID:$USER_GID config/x86-linux/.p10k.zsh $HOME
 ##+------------------+
 ## Install Miniconda 3
 ENV MINICONDA_DIR=$HOME/miniconda3
-RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O $HOME/miniconda.sh && \
+RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh -O $HOME/miniconda.sh && \
     /bin/bash $HOME/miniconda.sh -b -p $MINICONDA_DIR && \
     rm -rf $HOME/miniconda.sh
 ENV PATH=$PATH:$MINICONDA_DIR/bin
 # Setup conda
 RUN chown -R $USER_UID:$USER_GID $MINICONDA_DIR && \ 
     conda config --set always_yes true && \
-    conda config --add channels rpi && \
-    conda install -y python=3.6
+    conda install -y python=3.9
 # Create a new environment and install packages
-RUN conda create --name marte_env python=3.6 && \
+RUN conda create --name marte_env python=3.9 && \
     conda install --name marte_env numpy
 
 #+---------------+
@@ -244,10 +243,10 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MDSPLUS_DIR/lib
 ENV MDS_PATH=$MDSPLUS_DIR/tdi
 ENV CLASSPATH=$MDSPLUS_DIR/java/classes/jScope.jar:$MDSPLUS_DIR/java/classes/jTraverser.jar:$MDSPLUS_DIR/java/classes/jDevices.jar:$MDSPLUS_DIR/java/classes/mdsobjects.jar:$MDSPLUS_DIR/java/classes/jDispatcher.jar
 ## Install MDSplus into myenv
-RUN . activate myenv && \
+RUN . activate marte_env && \
     cd $MDSPLUS_DIR/python/MDSplus && \
     python setup.py install && \
-    cd $HOME/miniconda3/envs/myenv/lib/python3.6/site-packages/ && \
+    cd $HOME/miniconda3/envs/marte_env/lib/python3.6/site-packages/ && \
     cp -r $MDSPLUS_DIR/python/MDSplus . && \
     mv MDSplus/MDSplus.egg-info . && \
     . deactivate
