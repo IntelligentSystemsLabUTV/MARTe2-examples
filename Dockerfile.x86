@@ -13,13 +13,13 @@
 # --env="DISPLAY"
 # --privileged
 # --user marte
-# -v ~/.ssh:/home/$USERNAME/.ssh:ro
-# -v ./config-x86/zsh_history:/home/marte/zsh_history
-# -v ./config-x86/.aliases.sh:/home/marte/.aliases.sh
-# -v ./config-x86/.bashrc:/home/marte/.bashrc
-# -v ./config-x86/.nanorc:/home/marte/.nanorc
-# -v ./config-x86/.p10k.zsh:/home/marte/.p10k.zsh
-# -v ./config-x86/.zshrc:/home/marte/.zshrc
+# -v ~/.ssh:/home/marte/.ssh:ro
+# -v ./config/zsh_history:/home/marte/zsh_history
+# -v ./config/.aliases.sh:/home/marte/.aliases.sh
+# -v ./config/.bashrc:/home/marte/.bashrc
+# -v ./config/.nanorc:/home/marte/.nanorc
+# -v ./config/.zshrc:/home/marte/.zshrc
+# -v ./config/x86-linux/.p10k.zsh:/home/marte/.p10k.zsh
 # -v ./:/home/marte/workspace
 
 ########################
@@ -184,9 +184,9 @@ USER $USERNAME
 ENV HOME=/home/$USERNAME
 WORKDIR $HOME
 # Copy user configuration files
-COPY --chown=$USER_UID:$USER_GID config-x86/.aliases.sh $HOME
-COPY --chown=$USER_UID:$USER_GID config-x86/.bashrc $HOME
-COPY --chown=$USER_UID:$USER_GID config-x86/.nanorc $HOME
+COPY --chown=$USER_UID:$USER_GID config/.aliases.sh $HOME
+COPY --chown=$USER_UID:$USER_GID config/.bashrc $HOME
+COPY --chown=$USER_UID:$USER_GID config/.nanorc $HOME
 # Create user SSH directory
 RUN mkdir .ssh
 # Create workspace directory: host workspaces will be mounted here
@@ -205,31 +205,32 @@ RUN \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
-COPY --chown=$USER_UID:$USER_GID config-x86/.zshrc $HOME
-COPY --chown=$USER_UID:$USER_GID config-x86/.p10k.zsh $HOME
+COPY --chown=$USER_UID:$USER_GID config/.zshrc $HOME
+COPY --chown=$USER_UID:$USER_GID config/x86-linux/.p10k.zsh $HOME
 
 ##+------------------+
 ##|    Miniconda3    |
 ##+------------------+
 ## Install Miniconda 3
-#RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O $HOME/miniconda.sh && \
-#    /bin/bash $HOME/miniconda.sh -b -p $HOME/miniconda3 && \
-#    rm -rf miniconda.sh
-#ENV PATH=$PATH:$HOME/miniconda3/bin
-## Setup conda
-#RUN chown -R $USER_UID:$USER_GID $HOME/miniconda3/ && \ 
-#    conda config --set always_yes true && \
-#    conda config --add channels rpi && \
-#    conda install -y python=3.6
-## Create a new environment and install packages
-#RUN conda create --name myenv python=3.6 && \
-#    conda install --name myenv numpy
+ENV MINICONDA_DIR=$HOME/miniconda3
+RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O $HOME/miniconda.sh && \
+    /bin/bash $HOME/miniconda.sh -b -p $MINICONDA_DIR && \
+    rm -rf $HOME/miniconda.sh
+ENV PATH=$PATH:$MINICONDA_DIR/bin
+# Setup conda
+RUN chown -R $USER_UID:$USER_GID $MINICONDA_DIR && \ 
+    conda config --set always_yes true && \
+    conda config --add channels rpi && \
+    conda install -y python=3.6
+# Create a new environment and install packages
+RUN conda create --name marte_env python=3.6 && \
+    conda install --name marte_env numpy
 
 #+---------------+
 #|    MDSplus    |
 #+---------------+
 # Install MDSplus
-ENV MDSPLUS_DIR=/usr/mdsplus
+ENV MDSPLUS_DIR=$HOME/mdsplus
 RUN git clone https://github.com/MDSplus/mdsplus.git $HOME/mdsplus-alpha && \
     cd mdsplus-alpha && \
     ./bootstrap && \
@@ -243,13 +244,13 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MDSPLUS_DIR/lib
 ENV MDS_PATH=$MDSPLUS_DIR/tdi
 ENV CLASSPATH=$MDSPLUS_DIR/java/classes/jScope.jar:$MDSPLUS_DIR/java/classes/jTraverser.jar:$MDSPLUS_DIR/java/classes/jDevices.jar:$MDSPLUS_DIR/java/classes/mdsobjects.jar:$MDSPLUS_DIR/java/classes/jDispatcher.jar
 ## Install MDSplus into myenv
-#RUN . activate myenv && \
-#    cd $MDSPLUS_DIR/python/MDSplus && \
-#    python setup.py install && \
-#    cd $HOME/miniconda3/envs/myenv/lib/python3.6/site-packages/ && \
-#    cp -r $MDSPLUS_DIR/python/MDSplus . && \
-#    mv MDSplus/MDSplus.egg-info . && \
-#    . deactivate
+RUN . activate myenv && \
+    cd $MDSPLUS_DIR/python/MDSplus && \
+    python setup.py install && \
+    cd $HOME/miniconda3/envs/myenv/lib/python3.6/site-packages/ && \
+    cp -r $MDSPLUS_DIR/python/MDSplus . && \
+    mv MDSplus/MDSplus.egg-info . && \
+    . deactivate
 
 #+-------------+
 #|    OPCUA    |

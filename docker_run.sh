@@ -1,7 +1,18 @@
 #!/bin/bash
 
-if [[ "$#" -ne 1 ]]; then
-    echo "Usage: ./docker_run <image>"
+if [[ "$#" -ne 2 ]]; then
+    echo "Usage: ./docker_run <arch> <image>"
+    exit 1
+fi
+
+arch="$1"
+if [[ "$arch" == "armv8" || "$arch" == "armv8-linux" ]]; then
+    arch="armv8-linux"
+elif [[ "$arch" == "x86" || "$arch" == "x86-linux" ]]; then
+    arch="x86-linux"
+else
+    echo "Error: $1 not supported. Architecturs availables armv8-linux and x86-linux"
+    echo "Usage: ./docker_run <arch> <image>"
     exit 1
 fi
 
@@ -10,11 +21,11 @@ sudo docker run -it --privileged --network host \
 --env DISPLAY=$DISPLAY \
 --user marte \
 -v ~/.ssh:/home/marte/.ssh:ro \
--v /home/pi/MARTe2-examples/config-armv8/zsh_history:/home/marte/zsh_history \
--v /home/pi/MARTe2-examples/config-armv8/.aliases.sh:/home/marte/.aliases.sh \
--v /home/pi/MARTe2-examples/config-armv8/.bashrc:/home/marte/.bashrc \
--v /home/pi/MARTe2-examples/config-armv8/.nanorc:/home/marte/.nanorc \
--v /home/pi/MARTe2-examples/config-armv8/.p10k.zsh:/home/marte/.p10k.zsh \
--v /home/pi/MARTe2-examples/config-armv8/.zshrc:/home/marte/.zshrc \
+-v /home/pi/MARTe2-examples/config/zsh_history:/home/marte/zsh_history \
+-v /home/pi/MARTe2-examples/config/.aliases.sh:/home/marte/.aliases.sh \
+-v /home/pi/MARTe2-examples/config/.bashrc:/home/marte/.bashrc \
+-v /home/pi/MARTe2-examples/config/.nanorc:/home/marte/.nanorc \
+-v /home/pi/MARTe2-examples/config/.zshrc:/home/marte/.zshrc \
+-v /home/pi/MARTe2-examples/config/$arch/.p10k.zsh:/home/marte/.p10k.zsh \
 -v /home/pi/MARTe2-examples:/home/marte/workspace \
-$1 zsh
+$2 zsh

@@ -14,12 +14,12 @@
 # --privileged
 # --user marte
 # -v ~/.ssh:/home/$USERNAME/.ssh:ro
-# -v ./config-armv8/zsh_history:/home/marte/zsh_history
-# -v ./config-armv8/.aliases.sh:/home/marte/.aliases.sh
-# -v ./config-armv8/.bashrc:/home/marte/.bashrc
-# -v ./config-armv8/.nanorc:/home/marte/.nanorc
-# -v ./config-armv8/.p10k.zsh:/home/marte/.p10k.zsh
-# -v ./config-armv8/.zshrc:/home/marte/.zshrc
+# -v ./config/zsh_history:/home/marte/zsh_history
+# -v ./config/.aliases.sh:/home/marte/.aliases.sh
+# -v ./config/.bashrc:/home/marte/.bashrc
+# -v ./config/.nanorc:/home/marte/.nanorc
+# -v ./config/.zshrc:/home/marte/.zshrc
+# -v ./config/armv8-linux/.p10k.zsh:/home/marte/.p10k.zsh
 # -v ./:/home/marte/workspace
 
 
@@ -185,9 +185,9 @@ USER $USERNAME
 ENV HOME=/home/$USERNAME
 WORKDIR $HOME
 # Copy user configuration files
-COPY --chown=$USER_UID:$USER_GID config-armv8/.aliases.sh $HOME
-COPY --chown=$USER_UID:$USER_GID config-armv8/.bashrc $HOME
-COPY --chown=$USER_UID:$USER_GID config-armv8/.nanorc $HOME
+COPY --chown=$USER_UID:$USER_GID config/.aliases.sh $HOME
+COPY --chown=$USER_UID:$USER_GID config/.bashrc $HOME
+COPY --chown=$USER_UID:$USER_GID config/.nanorc $HOME
 # Create user SSH directory
 RUN mkdir .ssh
 # Create workspace directory: host workspaces will be mounted here
@@ -206,19 +206,8 @@ RUN \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
     && git clone --single-branch --branch 'master' --depth 1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git $ZSH_THEMES/powerlevel10k
-COPY --chown=$USER_UID:$USER_GID config-armv8/.zshrc $HOME
-COPY --chown=$USER_UID:$USER_GID config-armv8/.p10k.zsh $HOME
-
-
-###############
-##    DEV    ##
-###############
-FROM base as dev
-
-ARG USERNAME=marte
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-USER $USERNAME
+COPY --chown=$USER_UID:$USER_GID config/.zshrc $HOME
+COPY --chown=$USER_UID:$USER_GID config/armv8-linux/.p10k.zsh $HOME
 
 #+------------------+
 #|    Miniconda3    |

@@ -2,8 +2,8 @@
 
 # Docker Engine and Docker Compose installation script (updated as of today).
 #
-# Roberto Masocco <robmasocco@gmail.com>
 # Alessandro Tenaglia <alessandro.tenaglia42@gmail.com>
+# Roberto Masocco <robmasocco@gmail.com>
 #
 # January 26, 2022
 
