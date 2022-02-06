@@ -50,8 +50,6 @@ esac
 shift # past argument or value
 done
 
-# Set LD_LIBRARY_PATH
-LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
 # MARTe2 Core
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_DIR/Build/$TARGET/Core/
 # MARTe2 Components
@@ -87,7 +85,7 @@ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Examples_DIR/Build/$TARGET/Components/DataSources/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Examples_DIR/Build/$TARGET/Components/GAMs/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Examples_DIR/Build/$TARGET/Components/Interfaces/TCPSocketMessageProxy/
-LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Examples_DIR/Models/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Examples_DIR/Models/Gain
 # MDSplus
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MDSPLUS_DIR/lib/
 # SDN
