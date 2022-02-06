@@ -5,10 +5,10 @@ if [[ "$#" -ne 2 ]]; then
     exit 1
 fi
 
-arch="$1"
-if [[ "$arch" == "armv8" || "$arch" == "armv8-linux" ]]; then
+arch=""
+if [[ "$(arch)" == "armv7l" || "$(arch)" == "armv8l" ]]; then
     arch="armv8-linux"
-elif [[ "$arch" == "x86" || "$arch" == "x86-linux" ]]; then
+elif [[ "$(arch)" == "x86_64" ]]; then
     arch="x86-linux"
 else
     echo "Error: $1 not supported. Architecturs availables armv8-linux and x86-linux"
