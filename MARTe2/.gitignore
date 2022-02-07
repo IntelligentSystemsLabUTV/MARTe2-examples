@@ -23,7 +23,7 @@
 *.exe
 *.out
 *.app
-# Build
+# Build stuff
 Build/
 depends*
 createLibrary
