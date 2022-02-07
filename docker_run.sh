@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ "$#" -ne 2 ]]; then
-    echo "Usage: ./docker_run <arch> <image>"
+if [[ "$#" -ne 1 ]]; then
+    echo "Usage: ./docker_run <image>"
     exit 1
 fi
 
@@ -21,11 +21,11 @@ sudo docker run -it --privileged --network host \
 --env DISPLAY=$DISPLAY \
 --user marte \
 -v ~/.ssh:/home/marte/.ssh:ro \
--v /home/pi/MARTe2-examples/config/zsh_history:/home/marte/zsh_history \
--v /home/pi/MARTe2-examples/config/.aliases.sh:/home/marte/.aliases.sh \
--v /home/pi/MARTe2-examples/config/.bashrc:/home/marte/.bashrc \
--v /home/pi/MARTe2-examples/config/.nanorc:/home/marte/.nanorc \
--v /home/pi/MARTe2-examples/config/.zshrc:/home/marte/.zshrc \
--v /home/pi/MARTe2-examples/config/$arch/.p10k.zsh:/home/marte/.p10k.zsh \
--v /home/pi/MARTe2-examples:/home/marte/workspace \
-$2 zsh
+-v $(pwd)/config/zsh_history:/home/marte/zsh_history \
+-v $(pwd)/config/.aliases.sh:/home/marte/.aliases.sh \
+-v $(pwd)/config/.bashrc:/home/marte/.bashrc \
+-v $(pwd)/config/.nanorc:/home/marte/.nanorc \
+-v $(pwd)/config/.zshrc:/home/marte/.zshrc \
+-v $(pwd)/config/$arch/.p10k.zsh:/home/marte/.p10k.zsh \
+-v $(pwd)/:/home/marte/workspace \
+$1 zsh
