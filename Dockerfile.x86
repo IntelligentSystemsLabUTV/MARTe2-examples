@@ -275,9 +275,9 @@ RUN wget https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-demos-padova/raw/develop
     make && \
     rm -rf $HOME/SDN_1.0.12_nonCCS.tar.gz
 
-##+--------------+
-##|    MATLAB    |
-##+--------------+
+#+--------------+
+#|    MATLAB    |
+#+--------------+
 ENV MATLAB_DIR=$HOME/MATLAB
 COPY --chown=$USER_UID:$USER_GID MATLAB/Include.tar.gz $HOME
 RUN mkdir $MATLAB_DIR && \
