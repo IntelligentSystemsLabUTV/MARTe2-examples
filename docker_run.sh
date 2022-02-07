@@ -11,7 +11,7 @@ if [[ "$(arch)" == "armv7l" || "$(arch)" == "armv8l" ]]; then
 elif [[ "$(arch)" == "x86_64" ]]; then
     arch="x86-linux"
 else
-    echo "Error: $1 not supported. Architecturs availables armv8-linux and x86-linux"
+    echo "Error: $1 not supported. Architectures availables are armv8-linux and x86-linux"
     echo "Usage: ./docker_run <arch> <image>"
     exit 1
 fi
