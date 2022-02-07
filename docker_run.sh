@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Development environment for MARTe2 on x86
+#
+# Alessandro Tenaglia <alessandro.tenaglia42@gmail.com>
+# Federico Oliva <lvofrc95@outlook.it>
+#
+# January 6, 2022
+
 if [[ "$#" -ne 1 ]]; then
     echo "Usage: ./docker_run <image>"
     exit 1
