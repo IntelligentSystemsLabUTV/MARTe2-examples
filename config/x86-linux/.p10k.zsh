@@ -340,6 +340,9 @@
   # typeset -g POWERLEVEL9K_DIR_PREFIX='%248Fin '
 
   #####################################[ vcs: git status ]######################################
+  # Not safe to rely on gitstatusd in a container that might be deployed
+  typeset -g POWERLEVEL9K_DISABLE_GITSTATUS=true
+  
   # Branch icon. Set this parameter to '\uF126 ' for the popular Powerline branch icon.
   typeset -g POWERLEVEL9K_VCS_BRANCH_ICON='\uF126 '
 
