@@ -1,17 +1,19 @@
 # MDSplus 
 
-- export tree path
+- Export tree path
 
 ``` bash
 export <tree_name>_path=/path/to/tree
 ```
 
-
-- create tree
+- Create a new tree
 
 ``` bash
-set tree <tree_name>
-...
+edit <tree_name>/new
+add node NODE/usage=structure
+add node NUM/usage=numeric
+add node SIG/usage=signal
+add node 
 write
 close
 ```
