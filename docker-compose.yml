@@ -15,7 +15,7 @@ services:
       context: .
       dockerfile: Dockerfile.armv8
       network: host
-    network_mode: "host"
+    network_mode: host
     environment:
       TERM: xterm-256color
       DISPLAY:
@@ -31,16 +31,15 @@ services:
       - ./config/.nanorc:/home/marte/.nanorc
       - ./config/.zshrc:/home/marte/.zshrc
       - ./config/armv8-linux/.p10k.zsh:/home/marte/.p10k.zsh
-      - type: bind
-        source: ./
-        target: /home/marte/workspace
+      - ./:/home/marte/workspace
+
   # x86-linux
   marte2-x86:
     build:
       context: .
       dockerfile: Dockerfile.x86
       network: host
-    network_mode: "host"
+    network_mode: host
     environment:
       TERM: xterm-256color
       DISPLAY:
@@ -56,6 +55,4 @@ services:
       - ./config/.nanorc:/home/marte/.nanorc
       - ./config/.zshrc:/home/marte/.zshrc
       - ./config/x86-linux/.p10k.zsh:/home/marte/.p10k.zsh
-      - type: bind
-        source: ./
-        target: /home/marte/workspace
+      - ./:/home/marte/workspace
