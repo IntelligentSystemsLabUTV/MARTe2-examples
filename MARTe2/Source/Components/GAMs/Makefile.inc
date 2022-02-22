@@ -22,12 +22,15 @@
 #
 #############################################################
 
-PACKAGE = Components
-
 OBJSX = 
 
-SPB = 
+SPB= StrobeGAM.x 
 
+ifdef EFDA_MARTe_DIR
+SPB+=BaseLib2GAM.x
+endif
+
+PACKAGE=Components
 ROOT_DIR = ../../..
 
 MAKEDEFAULTDIR=$(MARTe2_DIR)/MakeDefaults
