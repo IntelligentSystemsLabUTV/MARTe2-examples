@@ -4,3 +4,5 @@
 .history/
 # Built Visual Studio Code Extensions
 *.vsix
+config/.zshrc
+.gitignore
