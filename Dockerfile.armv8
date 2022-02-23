@@ -306,6 +306,11 @@ RUN cd $MARTe2_DIR && \
 # Clone MARTe2 Components repository
 ENV MARTe2_Components_DIR=$HOME/MARTe2-components
 RUN git clone https://vcis-gitlab.f4e.europa.eu/aneto/MARTe2-components.git $MARTe2_Components_DIR
+# Fix OPCUAServer
+RUN sed -i "s/opcuaServer = UA_Server_new()\n;/opcuaServer = UA_Server_new();\n \
+                                               \tif(port!=4840){\n \
+                                               \t\tUA_ServerConfig_setMinimal(UA_Server_getConfig(opcuaServer), port, NULL);\n \
+                                               \t}\n/g" $MARTe2_Components_DIR/Source/Components/Interfaces/OPCUA/OPCUAServer.cpp
 # Fix Makefile.inc targets
 RUN sed -i "s/core test/core/g" $MARTe2_Components_DIR/Makefile.inc && \
     sed -i "s/clean::/clean:/g" $MARTe2_Components_DIR/Makefile.inc
