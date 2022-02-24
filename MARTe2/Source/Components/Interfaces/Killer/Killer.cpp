@@ -1,6 +1,6 @@
 /**
- * @file MessageFilterEx1.h
- * @brief Header file for class MessageFilterEx1
+ * @file Killer.h
+ * @brief Header file for class Killer
  * @date 22/02/2022
  * @author Alessandro Tenaglia
  *
@@ -22,9 +22,6 @@
  * definitions for inline methods which need to be visible to the compiler.
  */
 
-#ifndef INTERFACES_KILLERINTERFACE_KILLERFILTER_H
-#define INTERFACES_KILLERINTERFACE_KILLERFILTER_H
-
 /*---------------------------------------------------------------------------*/
 /*                        Standard header includes                           */
 /*---------------------------------------------------------------------------*/
@@ -32,14 +29,7 @@
 /*---------------------------------------------------------------------------*/
 /*                        Project header includes                            */
 /*---------------------------------------------------------------------------*/
-#include "AdvancedErrorManagement.h"
-#include "ConfigurationDatabase.h"
-#include "MessageFilter.h"
-#include "MessageI.h"
-#include "Object.h"
-#include "ObjectRegistryDatabase.h"
-#include "Sleep.h"
-#include "StandardParser.h"
+#include "Killer.h"
 
 /*---------------------------------------------------------------------------*/
 /*                           Class declaration                               */
@@ -47,47 +37,38 @@
 
 namespace MARTe2Tutorial {
 
-/**
- * @brief Message filter for the MessageEx1 below.
- */
-class MessageFilterEx1 : public MARTe::Object, public MARTe::MessageFilter {
-public:
-  CLASS_REGISTER_DECLARATION()
+Killer::Killer() : MARTe::Object(), MARTe::MessageI() {
+  using namespace MARTe;
+  filter = ReferenceT<RegisteredMethodsMessageFilter>(
+      GlobalObjectsDatabase::Instance()->GetStandardHeap());
+  filter->SetDestination(this);
+  MessageI::InstallMessageFilter(filter);
+}
 
-  /**
-   * @brief NOOP.
-   */
-  MessageFilterEx1() : MARTe::Object(), MARTe::MessageFilter(true) {
-    using namespace MARTe;
+Killer::~Killer() {
+  if (GetName() != NULL) {
+    REPORT_ERROR_STATIC(MARTe::ErrorManagement::Information,
+                        "No more references pointing at %s [%s]. "
+                        "The Object will be safely deleted.",
+                        GetName(), GetClassProperties()->GetName());
   }
+}
 
-  virtual void Purge(MARTe::ReferenceContainer &purgeList) {
-    owner = MARTe::Reference();
-  }
+void Killer::Purge(MARTe::ReferenceContainer &purgeList) {
+  RemoveMessageFilter(filter);
+}
 
-  virtual ~MessageFilterEx1() {
-    if (GetName() != NULL) {
-      REPORT_ERROR_STATIC(MARTe::ErrorManagement::Information,
-                          "No more references pointing at %s [%s]. "
-                          "The Object will be safely deleted.",
-                          GetName(), GetClassProperties()->GetName());
-    }
-  }
+MARTe::ErrorManagement::ErrorType Killer::Kill() {
+  REPORT_ERROR_STATIC(MARTe::ErrorManagement::Information, "Kill called.");
+  kill(0, SIGTERM);
+  return MARTe::ErrorManagement::NoError;
+}
 
-  void SetOwner(MARTe::Reference ownerIn) { owner = ownerIn; }
-
-  virtual MARTe::ErrorManagement::ErrorType
-  ConsumeMessage(MARTe::ReferenceT<MARTe::Message> &messageToTest);
-
-private:
-  MARTe::Reference owner;
-};
-CLASS_REGISTER(MessageFilterEx1, "")
+CLASS_REGISTER(Killer, "")
+CLASS_METHOD_REGISTER(Killer, Kill)
 
 } // namespace MARTe2Tutorial
 
 /*---------------------------------------------------------------------------*/
 /*                        Inline method definitions                          */
 /*---------------------------------------------------------------------------*/
-
-#endif /* INTERFACES_KILLERINTERFACE_KILLERFILTER_H */

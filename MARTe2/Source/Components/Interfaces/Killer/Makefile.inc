@@ -24,7 +24,7 @@
 #
 #############################################################
 
-OBJSX = MessageEx1.x
+OBJSX = Killer.x
 
 PACKAGE = Components/Interfaces
 
@@ -52,8 +52,8 @@ INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L4Messages
 INCLUDES += -I$(MARTe2_DIR)/Source/Core/Scheduler/L4StateMachine
 
 all: $(OBJS) \
-	$(BUILD_DIR)/MessageEx1$(LIBEXT) \
-	$(BUILD_DIR)/MessageEx1$(DLLEXT)
+	$(BUILD_DIR)/Killer$(LIBEXT) \
+	$(BUILD_DIR)/Killer$(DLLEXT)
 	echo  $(OBJS)
 
 include depends.$(TARGET)

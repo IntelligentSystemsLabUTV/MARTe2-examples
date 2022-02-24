@@ -1,6 +1,6 @@
 /**
- * @file MessageFilterEx1.h
- * @brief Header file for class MessageFilterEx1
+ * @file Killer.h
+ * @brief Header file for class Killer
  * @date 22/02/2022
  * @author Alessandro Tenaglia
  *
@@ -22,21 +22,61 @@
  * definitions for inline methods which need to be visible to the compiler.
  */
 
+#ifndef INTERFACES_KILLER_KILLER_H
+#define INTERFACES_KILLER_KILLER_H
+
 /*---------------------------------------------------------------------------*/
 /*                        Standard header includes                           */
 /*---------------------------------------------------------------------------*/
+#include <csignal>
+#include <unistd.h>
 
 /*---------------------------------------------------------------------------*/
 /*                        Project header includes                            */
 /*---------------------------------------------------------------------------*/
+#include "AdvancedErrorManagement.h"
+#include "CLASSMETHODREGISTER.h"
+#include "ConfigurationDatabase.h"
 #include "MessageFilter.h"
+#include "MessageI.h"
+#include "Object.h"
+#include "ObjectRegistryDatabase.h"
+#include "RegisteredMethodsMessageFilter.h"
+#include "Sleep.h"
+#include "StandardParser.h"
 
 /*---------------------------------------------------------------------------*/
 /*                           Class declaration                               */
 /*---------------------------------------------------------------------------*/
 
-namespace MARTe2Tutorial {} // namespace MARTe2Tutorial
+namespace MARTe2Tutorial {
+
+/**
+ * @brief A MARTe::Object class that will receive messages.
+ */
+class Killer : public MARTe::Object, public MARTe::MessageI {
+public:
+  CLASS_REGISTER_DECLARATION()
+
+  /**
+   * @brief Install the message filter.
+   */
+  Killer();
+
+  virtual ~Killer();
+
+  virtual void Purge(MARTe::ReferenceContainer &purgeList);
+
+  MARTe::ErrorManagement::ErrorType Kill();
+
+private:
+  MARTe::ReferenceT<MARTe::RegisteredMethodsMessageFilter> filter;
+};
+
+} // namespace MARTe2Tutorial
 
 /*---------------------------------------------------------------------------*/
 /*                        Inline method definitions                          */
 /*---------------------------------------------------------------------------*/
+
+#endif /* INTERFACES_KILLER_KILLER_H */

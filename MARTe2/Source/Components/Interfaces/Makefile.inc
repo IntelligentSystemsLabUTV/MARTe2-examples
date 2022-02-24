@@ -26,7 +26,7 @@ PACKAGE = Components
 
 OBJSX = 
 
-SPB = MyMessage.x \
+SPB = Killer.x \
 	  TCPSocketMessageProxy.x
 
 ifdef OPEN62541_LIB
