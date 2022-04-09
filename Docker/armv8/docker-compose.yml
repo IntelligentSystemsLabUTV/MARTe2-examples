@@ -1,0 +1,27 @@
+# MARTe2 environment containers specification.
+#
+# Alessandro Tenaglia <alessandro.tenaglia42@gmail.com>
+#
+# April 6, 2022
+
+version: "3.9"
+
+services:
+  marte2-examples:
+    image: alessandrotenaglia/marte2-env:armv8-dev
+    network_mode: host
+    environment:
+      TERM: xterm-256color
+      DISPLAY:
+      SHELL: /usr/bin/zsh
+    privileged: true
+    user: marte2
+    stdin_open: false
+    tty: true
+    working_dir: /home/marte2/workspace
+    volumes:
+      - /dev:/dev
+      - ~/.Xauthority:/home/marte2/.Xauthority:rw
+      - ~/.ssh:/home/marte2/.ssh
+      - ~/.gitconfig:/home/marte2/.gitconfig
+      - ../../:/home/marte2/workspace
