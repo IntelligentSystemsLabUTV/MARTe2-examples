@@ -8,7 +8,7 @@ version: "3.9"
 
 services:
   marte2-examples:
-    image: alessandrotenaglia/marte2-env:x86-dev
+    image: intelligentsystemslabutv/marte2-env:x86-dev
     network_mode: host
     environment:
       TERM: xterm-256color

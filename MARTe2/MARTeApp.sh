@@ -4,12 +4,12 @@
 # -l LOADER = The Loader to use
 # -f FILENAME = MARTe configuration file
 # -m MESSAGE = Start message
-# -s STATE = RealTimeApplication first state 
+# -s STATE = RealTimeApplication first state
 # -d cgdb = Run with cgdb
 # -d strace = Run with strace
 
 # Export env variables
-source MARTe2_setup.sh
+# source MARTe2_setup.sh
 
 # Run with cgdb or strace?
 DEBUG=""
@@ -118,6 +118,6 @@ else
     if [ -z ${STATE+x} ]; then
         $MARTeAPP -l $LOADER -f $FILE -m $MESSAGE
     else
-        $MARTeAPP -l $LOADER -f $FILE -s $STATE 
+        $MARTeAPP -l $LOADER -f $FILE -s $STATE
     fi
 fi
