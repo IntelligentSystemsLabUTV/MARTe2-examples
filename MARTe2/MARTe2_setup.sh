@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export HOME=/home/marte
+export HOME=/home/marte2
 export MDSPLUS_DIR=$HOME/mdsplus
 export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 if [[ "$(arch)" == "armv7l" || "$(arch)" == "armv8l" ]]; then
