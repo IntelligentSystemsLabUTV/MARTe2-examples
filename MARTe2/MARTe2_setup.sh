@@ -1,12 +1,12 @@
 #!/bin/bash
 
-export HOME=/home/marte
+export HOME=/home/marte2
 export MDSPLUS_DIR=$HOME/mdsplus
 export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
-if [[ "$(arch)" == "armv7l" || "$(arch)" == "armv8l" ]]; then
+if [[ "$(uname -m)" == "aarch64" ]]; then
     export TARGET=armv8-linux
     export MARTe2_DIR=$HOME/MARTe2-armv8
-elif [[ "$(arch)" == "x86_64" ]]; then
+elif [[ "$(uname -m)" == "x86_64" ]]; then
     export TARGET=x86-linux
     export MARTe2_DIR=$HOME/MARTe2
 else

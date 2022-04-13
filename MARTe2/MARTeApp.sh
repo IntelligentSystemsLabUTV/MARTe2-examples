@@ -9,7 +9,7 @@
 # -d strace = Run with strace
 
 # Export env variables
-# source MARTe2_setup.sh
+source MARTe2_setup.sh
 
 # Run with cgdb or strace?
 DEBUG=""
