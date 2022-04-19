@@ -24,4 +24,5 @@ services:
       - ~/.Xauthority:/home/marte2/.Xauthority:rw
       - ~/.ssh:/home/marte2/.ssh
       - ~/.gitconfig:/home/marte2/.gitconfig
+      - ../config/zsh_history:/home/marte2/zsh_history
       - ../../:/home/marte2/workspace
