@@ -1,4 +1,4 @@
-# MDSplus 
+# MDSplus
 
 Export tree path
 
@@ -19,7 +19,7 @@ edit <tree_name>/new
 add node NODE/usage=structure
 add node NUM/usage=numeric
 add node SIG/usage=signal
-add node 
+add node
 write
 close
 ```
