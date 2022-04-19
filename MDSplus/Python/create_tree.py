@@ -3,7 +3,7 @@
 from MDSplus import *
 from numpy import *
 
-os.environ['mytree_path'] = '/home/pi/MARTe2-examples/Trees/mytree'
+os.environ['mytree_path'] = '/home/marte2/workspace/Trees/mytree'
 
 t = Tree('mytree', -1, 'NEW')
 
