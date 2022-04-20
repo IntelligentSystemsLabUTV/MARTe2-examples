@@ -9,14 +9,14 @@
 # -d strace = Run with strace
 
 export HOME=/home/marte2
-if [[ "$(uname -m)" == "armv8l" ]]; then
+if [[ "$(uname -m)" == "aarch64" ]]; then
     export TARGET=armv8-linux
     export MARTe2_DIR=$HOME/MARTe2-armv8
 elif [[ "$(uname -m)" == "x86_64" ]]; then
     export TARGET=x86-linux
     export MARTe2_DIR=$HOME/MARTe2
 else
-    echo "Error: $1 not supported. Architectures availables are armv8-linux and x86-linux"
+    echo "Error: $(uname -m) not supported. Architectures availables are x86_64 and aarch64"
     exit 1
 fi
 export MARTe2_Components_DIR=$HOME/MARTe2-components
