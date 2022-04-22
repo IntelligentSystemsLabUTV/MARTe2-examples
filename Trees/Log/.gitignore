@@ -1,5 +1,6 @@
-# Ignore everything in this directory
-*
-# Except this file
-!.gitignore
-!*_model.*
+*.characteristics
+*.datafile
+*.tree
+!*_model.characteristics
+!*_model.datafile
+!*_model.tree
