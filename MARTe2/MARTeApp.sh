@@ -16,7 +16,7 @@ elif [[ "$(uname -m)" == "x86_64" ]]; then
     export TARGET=x86-linux
     export MARTe2_DIR=$HOME/MARTe2
 else
-    echo "Error: $(uname -m) not supported. Architectures availables are x86_64 and aarch64"
+    echo "Error: $(uname -m) not supported. Architectures availables are aarch64 and x86_64"
     exit 1
 fi
 export MARTe2_Components_DIR=$HOME/MARTe2-components
@@ -25,7 +25,7 @@ export MDSPLUS_DIR=$HOME/mdsplus
 export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 
 # Trees
-export log_path=192.168.0.200:8001/home/marte2/workspace/Trees/Log
+export log_path=160.80.97.134:7000::/home/marte2/workspace/Trees/Log
 
 # Run with cgdb or strace?
 DEBUG=""
