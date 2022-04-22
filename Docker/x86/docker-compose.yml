@@ -14,6 +14,8 @@ services:
       TERM: xterm-256color
       DISPLAY:
       SHELL: /usr/bin/zsh
+    ports:
+      - 7000:7000
     privileged: true
     user: marte2
     stdin_open: false
