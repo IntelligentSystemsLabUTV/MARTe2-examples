@@ -26,6 +26,7 @@ export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 
 # Trees
 export log_path=160.80.97.134:7000::/home/marte2/workspace/Trees/Log
+export pubsub_path=160.80.97.134:7000::/home/marte2/workspace/Trees/PubSub
 
 # Run with cgdb or strace?
 DEBUG=""
