@@ -21,7 +21,7 @@ else
 fi
 export MARTe2_Components_DIR=$HOME/MARTe2-components
 export MARTe2_Examples_DIR=$HOME/workspace/MARTe2
-export MDSPLUS_DIR=$HOME/mdsplus
+export MDSPLUS_DIR=$HOME/MDSplus
 export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 
 # Trees
