@@ -25,8 +25,9 @@ export MDSPLUS_DIR=$HOME/MDSplus
 export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 
 # Trees
-export log_path=192.168.0.200:7000::$HOME/workspace/Trees/Logger
-export pubsub_path=192.168.0.200:7000::$HOME/workspace/Trees/PubSub
+# export log_path=192.168.0.200:7000::$HOME/workspace/Trees/Logger
+# export pubsub_path=192.168.0.200:7000::$HOME/workspace/Trees/PubSub
+export control_path=$HOME/workspace/Trees/Control
 
 # Run with cgdb or strace?
 DEBUG=""
@@ -78,7 +79,9 @@ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/DataSources/MDSReader/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/DataSources/RealTimeThreadSynchronisation/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/DataSources/OPCUADataSource/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/GAMs/ConstantGAM/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/GAMs/IOGAM/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/GAMs/MathExpressionGAM/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/GAMs/SimulinkWrapperGAM/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/GAMs/WaveformGAM/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/Interfaces/SysLogger/
@@ -86,7 +89,10 @@ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components
 # MARTe2 Examples
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Examples_DIR/Build/$TARGET/Components/Interfaces/OPCUAClient/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Examples_DIR/Build/$TARGET/Components/Interfaces/TCPSocketMessageProxy/
-LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Examples_DIR/MATLAB/Models/Gain
+# MATLAB Models
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/marte2/workspace/MATLAB/Models/Gain
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/marte2/workspace/MATLAB/Models/PID
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/marte2/workspace/MATLAB/Models/Plant
 # MDSplus
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MDSPLUS_DIR/lib/
 # SDN

@@ -1,0 +1,6 @@
+*.characteristics
+*.datafile
+*.tree
+!*_model.characteristics
+!*_model.datafile
+!*_model.tree
