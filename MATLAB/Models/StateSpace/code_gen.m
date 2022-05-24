@@ -1,4 +1,4 @@
-model_name = 'Plant';
+model_name = 'StateSpace';
 % Solver
 set_param(model_name, 'SolverType', 'Fixed-step');
 % Code Generation
