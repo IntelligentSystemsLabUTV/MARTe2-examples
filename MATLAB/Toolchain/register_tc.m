@@ -10,7 +10,7 @@ save(fullfile(thispath,'raspberrypi_tc.mat'), 'tc');
 clear tc
 % See all valid target
 which -all rtwTargetInfo
-% Rehash the targets 
+% Rehash the targets
 RTW.TargetRegistry.getInstance('reset');
 % Review the list of registered toolchains
 coder.make.getToolchains

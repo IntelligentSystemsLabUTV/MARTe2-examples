@@ -41,8 +41,3 @@ set_param(model_name, 'CombineSignalStateStructs', 1);
 set_param(model_name, 'ArrayLayout', 'Column-major');
 % Templates
 set_param(model_name, 'GenerateSampleERTMain', 0);
-
-% Toolchain
-% register_tc;
-% cfg = coder.config('exe');
-% cfg.Toolchain = 'Raspberry Pi (64-bit Linux)';
