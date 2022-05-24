@@ -22,9 +22,9 @@ fi
 export MARTe2_Components_DIR=$HOME/MARTe2-components
 export MARTe2_Examples_DIR=$HOME/workspace/MARTe2
 export MATLAB_Examples_DIR=$HOME/workspace/MATLAB
-export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 export MDSPLUS_DIR=$HOME/MDSplus
-export log_path=$HOME/workspace/Trees/Logger
+export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
+export control_path=$HOME/workspace/Trees/Control
 
 # Run with cgdb or strace?
 DEBUG=""
@@ -70,9 +70,17 @@ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_DIR/Build/$TARGET/Core/
 # MARTe2 Components
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/DataSources/LinuxTimer/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/DataSources/LoggerDataSource/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/DataSources/MDSWriter/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/GAMs/ConstantGAM/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/GAMs/IOGAM/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/GAMs/MathExpressionGAM/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Components_DIR/Build/$TARGET/Components/GAMs/SimulinkWrapperGAM/
 # MARTe2 Examples
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MARTe2_Examples_DIR/Build/$TARGET/Components/Interfaces/TCPSocketMessageProxy/
+# MATLAB Models
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/marte2/workspace/MATLAB/Models/Gain
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/marte2/workspace/MATLAB/Models/PID
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/marte2/workspace/MATLAB/Models/Plant
 # MDSplus
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MDSPLUS_DIR/lib/
 
