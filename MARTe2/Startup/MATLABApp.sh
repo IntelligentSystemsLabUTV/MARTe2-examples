@@ -8,8 +8,6 @@
 # -d cgdb = Run with cgdb
 # -d strace = Run with strace
 
-export control_path=$HOME/workspace/Trees/Control
-
 # Run with cgdb or strace?
 DEBUG=""
 

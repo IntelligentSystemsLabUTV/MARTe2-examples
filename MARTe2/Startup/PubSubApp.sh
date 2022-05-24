@@ -8,8 +8,6 @@
 # -d cgdb = Run with cgdb
 # -d strace = Run with strace
 
-export log_path=$HOME/workspace/Trees/Logger
-
 # Run with cgdb or strace?
 DEBUG=""
 
