@@ -13,10 +13,9 @@ else
 fi
 export MARTe2_Components_DIR=$HOME/MARTe2-components
 export MARTe2_Examples_DIR=$HOME/workspace/MARTe2
-export MATLAB_Examples_DIR=$HOME/workspace/MATLAB
 export MDSPLUS_DIR=$HOME/MDSplus
 export SDN_CORE_DIR=$HOME/SDN_1.0.12_nonCCS
 
-export control_path=$HOME/workspace/Trees/Logger
+export control_path=$HOME/workspace/Trees/Control
 export log_path=$HOME/workspace/Trees/Logger
 export pubsub_path=$HOME/workspace/Trees/Logger

@@ -41,7 +41,7 @@ all: $(OBJS) core
 core: $(SUBPROJMAIN) check-env
 	echo $(SUBPROJMAIN)
 
-clean: $(SUBPROJMAINCLEAN) clean_wipe_old
+clean:: $(SUBPROJMAINCLEAN) clean_wipe_old
 
 include $(MAKEDEFAULTDIR)/MakeStdLibRules.$(TARGET)
 
