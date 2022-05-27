@@ -8,6 +8,8 @@
 # -d cgdb = Run with cgdb
 # -d strace = Run with strace
 
+source ../marte2_setup.sh
+
 # Run with cgdb or strace?
 DEBUG=""
 
