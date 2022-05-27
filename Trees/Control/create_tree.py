@@ -12,4 +12,3 @@ T.addNode('ERROR', 'SIGNAL')
 T.addNode('INPUT', 'SIGNAL')
 T.addNode('OUTPUT', 'SIGNAL')
 T.write()
-
